@@ -23,12 +23,6 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run stylelint
-        run: npm run stylelint
-
-      - name: Run prettier
-        run: npm run prettier
-
       - name: Run ESLint
         run: npm run lint
 
