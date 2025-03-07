@@ -36,10 +36,11 @@
   "scripts": {
     "prepare": "husky",
     "commit": "cz",
+    "test": "echo \"No tests specified\"",
     "release": "semantic-release",
+    "semantic-release": "semantic-release",
     "lint": "eslint .",
-    "lint:fix": "eslint --fix .",
-    "semantic-release": "semantic-release"
+    "lint:fix": "eslint --fix ."
   },
   "publishConfig": {
     "access": "public"
