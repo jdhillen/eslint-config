@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/jdhillen/eslint-config/compare/v2.0.0...v2.0.1) (2025-03-07)
+
+
+### Bug Fixes
+
+* **prettier:** removed Prettier formatting for ESLint. Wanting this to be only ESLint ([ae66369](https://github.com/jdhillen/eslint-config/commit/ae663696e7505886526363187f8a8aeef88254bf))
+
 # [2.0.0](https://github.com/jdhillen/eslint-config/compare/v1.0.0...v2.0.0) (2025-03-07)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "@jdhillen/eslint-config",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "ESLint configuration for Vue.js and TypeScript projects",
   "license": "MIT",
   "type": "module",
