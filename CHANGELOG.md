@@ -1,3 +1,10 @@
+## [2.0.2](https://github.com/jdhillen/eslint-config/compare/v2.0.1...v2.0.2) (2025-03-07)
+
+
+### Bug Fixes
+
+* **package.json:** ran npm pkg fix to fix some a bug that was happening during deployment ([83b3c1a](https://github.com/jdhillen/eslint-config/commit/83b3c1aea12fd8855f0d1ae11559a42da4732e68))
+
 ## [2.0.1](https://github.com/jdhillen/eslint-config/compare/v2.0.0...v2.0.1) (2025-03-07)
 
 
