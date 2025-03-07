@@ -6,7 +6,6 @@ ESLint configuration for Vue.js and TypeScript projects with industry-standard r
 
 - Vue.js 3 support with [eslint-plugin-vue](https://eslint.vuejs.org/)
 - TypeScript support with [@typescript-eslint](https://typescript-eslint.io/)
-- Integration with [Prettier](https://prettier.io/)
 - Import ordering rules with [eslint-plugin-import](https://github.com/import-js/eslint-plugin-import)
 - Best practices for JavaScript and TypeScript
 - PascalCase component naming in templates
@@ -20,11 +19,11 @@ ESLint configuration for Vue.js and TypeScript projects with industry-standard r
 npm install --save-dev @jdhillen/eslint-config
 ```
 
-With npm v7+ peer dependencies (eslint, prettier, typescript) are automatically installed. For yarn or pnpm, or if you want to install specific versions:
+With npm v7+ peer dependencies (eslint, typescript) are automatically installed. For yarn or pnpm, or if you want to install specific versions:
 
 ```bash
 # npm with specific versions
-npm install --save-dev @jdhillen/eslint-config eslint@^9 prettier@^3 typescript@^5
+npm install --save-dev @jdhillen/eslint-config eslint@^9 typescript@^5
 
 # yarn
 yarn add --dev @jdhillen/eslint-config
