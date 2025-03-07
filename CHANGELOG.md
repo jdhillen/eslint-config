@@ -1,3 +1,10 @@
+## [2.0.3](https://github.com/jdhillen/eslint-config/compare/v2.0.2...v2.0.3) (2025-03-07)
+
+
+### Bug Fixes
+
+* trying to fix the ci/cd for npm ([f0b3d19](https://github.com/jdhillen/eslint-config/commit/f0b3d1971f27f2e1c76d4180024d0d2a8467be7a))
+
 ## [2.0.2](https://github.com/jdhillen/eslint-config/compare/v2.0.1...v2.0.2) (2025-03-07)
 
 
