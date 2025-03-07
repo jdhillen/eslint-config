@@ -12,7 +12,7 @@
     "LICENSE"
   ],
   "bin": {
-    "setup-eslint-config": "./bin/setup-eslint-config.js"
+    "setup-eslint-config": "bin/setup-eslint-config.js"
   },
   "author": {
     "name": "J.D. Hillen",
