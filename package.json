@@ -51,19 +51,15 @@
     "@typescript-eslint/eslint-plugin": "^8.26.0",
     "@typescript-eslint/parser": "^8.26.0",
     "eslint": "^9.21.0",
-    "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-prettier": "^5.2.3",
     "eslint-plugin-vue": "^10.0.0",
     "vue-eslint-parser": "^10.1.1"
   },
   "peerDependencies": {
-    "prettier": ">=3.0.0",
     "typescript": ">=5.0.0"
   },
   "devDependencies": {
     "husky": "^9.1.7",
-    "prettier": "^3.5.3",
     "typescript": "^5.8.2"
   },
   "config": {

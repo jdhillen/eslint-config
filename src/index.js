@@ -2,7 +2,6 @@ import js from '@eslint/js';
 import tseslint from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 import importPlugin from 'eslint-plugin-import';
-import prettierPlugin from 'eslint-plugin-prettier';
 import vuePlugin from 'eslint-plugin-vue';
 import vueParser from 'vue-eslint-parser';
 
@@ -37,7 +36,6 @@ export default function createConfig(options = {}) {
         '@typescript-eslint': tseslint,
         vue: vuePlugin,
         import: importPlugin,
-        prettier: prettierPlugin
       },
       rules: {
         // General JavaScript rules
@@ -88,9 +86,6 @@ export default function createConfig(options = {}) {
             }
           }
         ],
-
-        // Prettier rules
-        'prettier/prettier': 'error'
       }
     },
 
