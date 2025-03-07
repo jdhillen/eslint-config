@@ -1,3 +1,15 @@
+# [2.0.0](https://github.com/jdhillen/eslint-config/compare/v1.0.0...v2.0.0) (2025-03-07)
+
+
+### Features
+
+* trigger major version bump without code changes ([973d178](https://github.com/jdhillen/eslint-config/commit/973d1783800172f4350b38001f2b729c3a2e0de8))
+
+
+### BREAKING CHANGES
+
+* Force version bump to 2.0.0
+
 # 1.0.0 (2025-03-07)
 
 
