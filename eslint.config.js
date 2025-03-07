@@ -5,9 +5,7 @@ import createConfig from './src/index.js';
 const config = createConfig({
   ignorePaths: [
     // Add additional paths to ignore here, for example:
-    // '**/coverage/**',
-    // '**/temp/**',
-    // '**/logs/**'
+    '**/bin/**'
   ]
 });
 
