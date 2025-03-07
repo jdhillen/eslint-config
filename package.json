@@ -37,22 +37,20 @@
     "prepare": "husky",
     "commit": "cz",
     "release": "semantic-release",
-    "stylelint": "stylelint \"./src/**/*.{css,scss,vue}\" || true",
-    "stylelint:fix": "stylelint \"./src/**/*.{css,scss,vue}\" || true --fix",
-    "prettier": "prettier --check \"**/*.{js,jsx,ts,tsx,vue,scss,css,md,json}\"",
-    "prettier:fix": "prettier --write \"**/*.{js,jsx,ts,tsx,vue,scss,css,md,json}\"",
     "lint": "eslint .",
-    "lint:fix": "eslint --fix ."
+    "lint:fix": "eslint --fix .",
+    "semantic-release": "semantic-release"
   },
   "publishConfig": {
     "access": "public"
   },
   "dependencies": {
     "@eslint/js": "^9.21.0",
+    "@jdhillen/release-config": "^2.0.0",
     "@typescript-eslint/eslint-plugin": "^8.26.0",
     "@typescript-eslint/parser": "^8.26.0",
     "eslint": "^9.21.0",
-    "eslint-config-prettier": "^10.0.2",
+    "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-prettier": "^5.2.3",
     "eslint-plugin-vue": "^10.0.0",
@@ -63,8 +61,6 @@
     "typescript": ">=5.0.0"
   },
   "devDependencies": {
-    "@jdhillen/release-config-test": "^1.0.6",
-    "@jdhillen/stylelint-config-test": "^1.0.8",
     "husky": "^9.1.7",
     "prettier": "^3.5.3",
     "typescript": "^5.8.2"
