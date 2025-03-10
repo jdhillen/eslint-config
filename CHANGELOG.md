@@ -1,3 +1,10 @@
+## [2.0.4](https://github.com/jdhillen/eslint-config/compare/v2.0.3...v2.0.4) (2025-03-10)
+
+
+### Bug Fixes
+
+* **index.js:** added TS recommended ([fbbd275](https://github.com/jdhillen/eslint-config/commit/fbbd275cba4cffc62fe90447f45d687e4b663203))
+
 ## [2.0.3](https://github.com/jdhillen/eslint-config/compare/v2.0.2...v2.0.3) (2025-03-07)
 
 
