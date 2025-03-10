@@ -21,6 +21,8 @@ export default function createConfig(options = {}) {
 
   return [
     js.configs.recommended,
+    // Include TypeScript ESLint recommended rules manually since
+    // tseslint.configs.recommended isn't compatible with flat config
     {
       files: ['**/*.js', '**/*.ts', '**/*.vue'],
       languageOptions: {
@@ -41,14 +43,25 @@ export default function createConfig(options = {}) {
         // General JavaScript rules
         'no-console': ['warn', { allow: ['warn', 'error'] }],
         'no-debugger': 'warn',
-        'prefer-const': 'error',
-        'no-var': 'error',
         'object-shorthand': 'error',
         'arrow-body-style': ['error', 'as-needed'],
         eqeqeq: ['error', 'always'],
-
-        // TypeScript rules
-        '@typescript-eslint/no-explicit-any': 'warn',
+        'prefer-const': 'error',
+        'no-var': 'error',
+        
+        // TypeScript ESLint recommended rules (manually added)
+        '@typescript-eslint/ban-ts-comment': 'error',
+        '@typescript-eslint/no-array-constructor': 'error',
+        '@typescript-eslint/no-duplicate-enum-values': 'error',
+        '@typescript-eslint/no-empty-interface': 'error',
+        '@typescript-eslint/no-explicit-any': 'warn', // Reduced from error to warn
+        '@typescript-eslint/no-extra-non-null-assertion': 'error',
+        '@typescript-eslint/no-inferrable-types': 'error',
+        '@typescript-eslint/no-misused-new': 'error',
+        '@typescript-eslint/no-namespace': 'error',
+        '@typescript-eslint/no-non-null-asserted-optional-chain': 'error',
+        '@typescript-eslint/no-this-alias': 'error',
+        '@typescript-eslint/no-unnecessary-type-constraint': 'error',
         '@typescript-eslint/no-unused-vars': [
           'error',
           {
@@ -56,6 +69,11 @@ export default function createConfig(options = {}) {
             varsIgnorePattern: '^_'
           }
         ],
+        '@typescript-eslint/prefer-as-const': 'error',
+        '@typescript-eslint/prefer-namespace-keyword': 'error',
+        '@typescript-eslint/triple-slash-reference': 'error',
+        
+        // Additional TypeScript rules
         '@typescript-eslint/explicit-function-return-type': 'off',
         '@typescript-eslint/explicit-module-boundary-types': 'off',
 
