@@ -4,6 +4,27 @@ import { existsSync } from 'fs';
 import { readFile, writeFile } from 'fs/promises';
 import { join } from 'path';
 
+function detectFrameworkFromDeps(allDeps) {
+  const frameworkChecks = [
+    { check: () => allDeps.next || allDeps.remix || allDeps.gatsby, result: 'react' },
+    { check: () => allDeps.react, result: 'react' },
+    { check: () => allDeps.nuxt, result: 'vue' },
+    { check: () => allDeps.vue, result: 'vue' },
+    { check: () => allDeps['@sveltejs/kit'], result: 'svelte' },
+    { check: () => allDeps.svelte, result: 'svelte' },
+    { check: () => allDeps['solid-js'], result: 'solid' },
+    { check: () => allDeps.astro, result: 'astro' },
+    { check: () => allDeps['@angular/core'], result: 'angular' },
+    { check: () => allDeps.express || allDeps.fastify || allDeps.koa, result: 'node' }
+  ];
+
+  for (const { check, result } of frameworkChecks) {
+    if (check()) return result;
+  }
+
+  return 'vanilla';
+}
+
 async function detectProjectSetup() {
   const cwd = process.cwd();
   const packagePath = join(cwd, 'package.json');
@@ -20,18 +41,7 @@ async function detectProjectSetup() {
     ...packageContent.peerDependencies
   };
 
-  let framework = 'vanilla';
-  if (allDeps.next || allDeps.remix || allDeps.gatsby) framework = 'react';
-  else if (allDeps.react) framework = 'react';
-  else if (allDeps.nuxt) framework = 'vue';
-  else if (allDeps.vue) framework = 'vue';
-  else if (allDeps['@sveltejs/kit']) framework = 'svelte';
-  else if (allDeps.svelte) framework = 'svelte';
-  else if (allDeps['solid-js']) framework = 'solid';
-  else if (allDeps.astro) framework = 'astro';
-  else if (allDeps['@angular/core']) framework = 'angular';
-  else if (allDeps.express || allDeps.fastify || allDeps.koa) framework = 'node';
-
+  const framework = detectFrameworkFromDeps(allDeps);
   const typescript = existsSync(tsconfigPath);
 
   return { framework, typescript };

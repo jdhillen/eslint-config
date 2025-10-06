@@ -4,6 +4,55 @@ import { join } from 'path';
 import { getAllDependencies, readPackageJson } from './utils/package-reader.js';
 
 /**
+ * Check for React meta-frameworks
+ */
+function detectReactMetaFramework(deps) {
+  return deps.next || deps['@next/core'] || deps.remix || deps['@remix-run/react'] ||
+    deps['@remix-run/node'] || deps.gatsby || deps['gatsby-link'];
+}
+
+/**
+ * Check for Vue meta-frameworks
+ */
+function detectVueMetaFramework(deps) {
+  return deps.nuxt || deps['nuxt3'];
+}
+
+/**
+ * Check for Svelte meta-frameworks
+ */
+function detectSvelteMetaFramework(deps) {
+  return deps['@sveltejs/kit'];
+}
+
+/**
+ * Check for base framework dependencies
+ */
+function detectBaseFramework(deps) {
+  if (deps.react || deps['react-dom']) return 'react';
+  if (deps.vue || deps['@vue/runtime-core']) return 'vue';
+  if (deps['@angular/core']) return 'angular';
+  if (deps.svelte) return 'svelte';
+  if (deps['solid-js']) return 'solid';
+  if (deps.astro) return 'astro';
+  return null;
+}
+
+/**
+ * Check if project is a Node.js backend
+ */
+function isNodeBackend(pkg, deps, cwd) {
+  if (pkg.type !== 'module') return false;
+
+  const hasNodeFramework = deps.express || deps.fastify || deps.koa || deps['@hapi/hapi'];
+  const hasServerFiles = existsSync(join(cwd, 'server.js')) ||
+    existsSync(join(cwd, 'app.js')) ||
+    (existsSync(join(cwd, 'index.js')) && existsSync(join(cwd, 'routes')));
+
+  return hasNodeFramework || hasServerFiles;
+}
+
+/**
  * Detect the framework being used in the project
  * @param {string} cwd - Current working directory
  * @returns {string} Detected framework name
@@ -18,66 +67,17 @@ export function detectFramework(cwd = process.cwd()) {
 
   const deps = getAllDependencies(pkg);
 
-  // Check for meta-frameworks first (they depend on base frameworks)
-  if (deps.next || deps['@next/core']) {
-    return 'react'; // Next.js → React
-  }
+  // Check meta-frameworks first
+  if (detectReactMetaFramework(deps)) return 'react';
+  if (detectVueMetaFramework(deps)) return 'vue';
+  if (detectSvelteMetaFramework(deps)) return 'svelte';
 
-  if (deps.nuxt || deps['nuxt3']) {
-    return 'vue'; // Nuxt → Vue
-  }
+  // Check base frameworks
+  const baseFramework = detectBaseFramework(deps);
+  if (baseFramework) return baseFramework;
 
-  if (deps['@sveltejs/kit']) {
-    return 'svelte'; // SvelteKit → Svelte
-  }
-
-  if (deps.remix || deps['@remix-run/react'] || deps['@remix-run/node']) {
-    return 'react'; // Remix → React
-  }
-
-  if (deps.gatsby || deps['gatsby-link']) {
-    return 'react'; // Gatsby → React
-  }
-
-  if (deps.astro) {
-    return 'astro'; // Astro
-  }
-
-  // Check for base frameworks
-  if (deps.react || deps['react-dom']) {
-    return 'react';
-  }
-
-  if (deps.vue || deps['@vue/runtime-core']) {
-    return 'vue';
-  }
-
-  if (deps['@angular/core']) {
-    return 'angular';
-  }
-
-  if (deps.svelte) {
-    return 'svelte';
-  }
-
-  if (deps['solid-js']) {
-    return 'solid';
-  }
-
-  // Check for Node.js backend indicators
-  const isNodeProject =
-    pkg.type === 'module' &&
-    (deps.express ||
-      deps.fastify ||
-      deps.koa ||
-      deps['@hapi/hapi'] ||
-      existsSync(join(cwd, 'server.js')) ||
-      existsSync(join(cwd, 'app.js')) ||
-      existsSync(join(cwd, 'index.js')) && existsSync(join(cwd, 'routes')));
-
-  if (isNodeProject) {
-    return 'node';
-  }
+  // Check Node.js backend
+  if (isNodeBackend(pkg, deps, cwd)) return 'node';
 
   // Default to vanilla JavaScript
   return 'vanilla';

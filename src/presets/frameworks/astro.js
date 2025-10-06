@@ -1,4 +1,4 @@
-import astro from 'eslint-plugin-astro';
+import { configs } from 'eslint-plugin-astro';
 
 /**
  * Astro framework configuration
@@ -12,8 +12,8 @@ import astro from 'eslint-plugin-astro';
  */
 export default function createAstroPreset() {
   return [
-    ...astro.configs.recommended,
-    ...astro.configs['jsx-a11y-recommended'],
+    ...configs.recommended,
+    ...configs['jsx-a11y-recommended'],
     {
       files: ['**/*.astro'],
       rules: {
