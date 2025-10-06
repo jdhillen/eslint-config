@@ -1,15 +1,8 @@
 import createConfig from './src/index.js';
 
-// You can specify additional folders to ignore during linting
-// Note: node_modules, dist, and build are already ignored by default
-const config = createConfig({
-  ignorePaths: [
-    // Add additional paths to ignore here, for example:
-    '**/bin/**'
-  ]
+// This package is Node.js-based (not browser-based)
+export default createConfig({
+  environment: 'node',
+  typescript: false,
+  ignorePaths: ['src/index.js.backup']
 });
-
-export default [
-  ...config
-  // You can add your own rules or overrides here
-];

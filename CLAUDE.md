@@ -4,24 +4,151 @@ This file provides guidance to Claude Code when working with code in this reposi
 
 ## Repository Overview
 
-**@jdhillen/eslint-config** is a shareable ESLint configuration package for Vue.js 3 and TypeScript projects. It provides opinionated linting rules based on industry best practices, using ESLint v9's modern flat config format.
+**@jdhillen/eslint-config** is a universal ESLint configuration package for modern JavaScript/TypeScript projects. It supports React, Vue.js 3, Svelte, Vanilla JS/TS, and Node.js with automatic framework detection and zero configuration required. Built on ESLint v9's modern flat config format with industry best practices.
 
 ### Project Statistics
 - Primary language: JavaScript (ES Modules)
-- Lines of code: ~400
-- Active since: March 7, 2025 (3 days old)
-- Current version: 2.0.4
+- ECMAScript version: 2025 (ES2025)
+- Node.js requirement: >=22.12.0 (Node.js 22 LTS "Jod")
+- Lines of code: ~1,500+ (modular preset architecture)
+- Active since: March 7, 2025
+- Current version: 3.1.0 (Phase 2 in progress)
 - Main maintainer: J.D. Hillen
 - Repository: https://github.com/jdhillen/eslint-config
 - Published package: @jdhillen/eslint-config
 
 ### Key Characteristics
-- ESLint 9+ flat config only (breaking from legacy .eslintrc format)
-- Bundles all plugins as direct dependencies (eliminates peer dependency conflicts)
-- Deliberately excludes Prettier (removed after v2.0.0 - see [Hidden Context](#hidden-context))
-- Includes automated CLI setup tool
-- Highly automated release pipeline (semantic-release)
-- Requires Node.js >=20.0.0
+- **Universal Framework Support** - React, Vue.js, Svelte, Vanilla JS/TS, Node.js (Phase 2 in progress)
+- **Auto-Detection** - Automatically detects framework, environment, and TypeScript from project
+- **Zero Configuration** - Works out of the box with sensible defaults
+- **Modular Architecture** - Preset-based system for maintainability
+- **ESLint 9+ flat config** only (breaking from legacy .eslintrc format)
+- **All plugins bundled** as direct dependencies (eliminates peer dependency conflicts)
+- **TypeScript optional** - Works with or without TypeScript
+- **Deliberately excludes Prettier** (removed after v2.0.0 - see [Hidden Context](#hidden-context))
+- **Official presets** (typescript-eslint, vue, react, svelte) instead of manual rule copying
+- **Comprehensive rules** - 115+ organized rules optimized for each framework
+- **Automated CLI setup** tool
+- **Semantic versioning** with automated release pipeline
+- **Requires Node.js >=22.12.0** (Node.js 22 LTS "Jod")
+- **ECMAScript 2025** (ES2025) with latest language features
+
+### Recent Major Changes
+
+**Phase 2: Svelte Support (v3.1.0) - In Progress:**
+
+**Svelte Framework Added:**
+- `eslint-plugin-svelte@^3.12.4` - Component and template rules
+- `svelte-eslint-parser@^1.3.3` - Parser for .svelte files
+- Comprehensive 27-rule preset organized by category
+- Svelte 5 runes mode support ($state, $derived, etc.)
+- Auto-detection from `svelte` and `@sveltejs/kit` dependencies
+
+**Svelte Rules Breakdown (27 rules):**
+- **Core Best Practices (9 rules)** - No `@html`, reactive store access, optimized styles
+- **Accessibility (8 rules)** - ARIA attributes, keyboard navigation, semantic HTML
+- **Svelte 5 Runes (4 rules)** - Block lang enforcement, no direct DOM manipulation
+- **Code Style (6 rules)** - Shorthand attributes/directives, consistent quotes and indentation
+
+**Integration Updates:**
+- Added Svelte to framework switch in `src/index.js`
+- Added `.svelte` extension to all file pattern matchers
+- Updated detection logic for SvelteKit meta-framework
+- Extended TypeScript preset to cover `.svelte` files
+- Package metadata updated with Svelte keywords and description
+
+**Documentation:**
+- Added Svelte section to README with comprehensive examples
+- Updated framework detection table with Svelte/SvelteKit
+- Added Svelte rules section with good/bad examples
+- Updated rule count from 88 to 115 rules
+- Updated comparison tables to mention Svelte support
+
+**Setup Tool Improvements:**
+- Updated generated config template with modern 3-option approach
+- Added auto-detection preview showing detected framework and TypeScript
+- Improved comments and documentation in generated `eslint.config.js`
+- Added all framework options (react, vue, svelte) to inline examples
+- Better guidance for zero-config vs explicit configuration vs custom overrides
+
+**Phase 1: Universal Framework Support (v3.0.0) - Complete:**
+
+**Architecture Transformation:**
+- Complete refactor from Vue-only to universal multi-framework support
+- New modular preset-based architecture with file structure:
+  ```
+  src/
+  ├── index.js                 # Main factory function with auto-detection
+  ├── detectors.js             # Framework/environment/TypeScript detection
+  ├── utils/package-reader.js  # Package.json utilities
+  ├── presets/
+  │   ├── base.js             # Framework-agnostic JavaScript rules
+  │   ├── typescript.js       # TypeScript-specific rules
+  │   ├── imports.js          # Import/export rules
+  │   ├── environments/       # Browser, Node, Universal
+  │   └── frameworks/         # React, Vue, Svelte, Vanilla
+  ```
+
+**React Support Added:**
+- `eslint-plugin-react@^7.37.0` - JSX and component rules
+- `eslint-plugin-react-hooks@^5.1.0` - Hooks validation
+- Conservative 15-rule preset (essential only, not comprehensive)
+- React 17+ new JSX transform support (no React import needed)
+- Auto-detection from `react`, `next`, `remix`, `gatsby` dependencies
+
+**Auto-Detection System:**
+- Detects 8+ frameworks: React, Vue, Angular, Svelte, Solid, Astro, Node.js, Vanilla
+- Detects meta-frameworks: Next.js → React, Nuxt → Vue, SvelteKit → Svelte, etc.
+- Detects environment: browser, node, or universal (Electron, fullstack apps)
+- Detects TypeScript: checks for `tsconfig.json` existence
+- Transparent logging: shows what was detected on each run
+
+**TypeScript Made Optional:**
+- Added `peerDependenciesMeta` to make TypeScript optional peer dependency
+- Config works perfectly with JavaScript-only projects
+- TS rules only loaded when TypeScript detected or explicitly enabled
+
+**New Factory Function API:**
+```javascript
+createConfig({
+  framework: 'auto',    // 'auto' | 'react' | 'vue' | 'svelte' | 'vanilla' | 'node'
+  environment: 'auto',  // 'auto' | 'browser' | 'node' | 'universal'
+  typescript: 'auto',   // 'auto' | true | false
+  ignorePaths: [],      // Additional paths to ignore
+  rules: {}             // Rule overrides
+})
+```
+
+**Backward Compatibility:**
+- Auto-detection defaults maintain existing behavior for Vue users
+- `createConfig()` with no options still works (uses auto-detection)
+- No breaking changes for existing consumers
+
+**Package Metadata:**
+- Description updated: "Universal ESLint configuration for React, Vue.js, Svelte, and TypeScript projects with auto-detection"
+- Keywords added: react, svelte, javascript, auto-detect, universal
+
+**Previous Refactoring - Commit 671d2ea:**
+- Migrated from manual rule copying to official presets
+- Added `@eslint/compat` for plugin compatibility
+- Expanded from 16 to 88 rules across 6 organized categories
+- Removed incorrect `--config` flags from setup tool (ESLint 9 auto-discovers config)
+- Complete README rewrite for beginners
+- Updated all dependencies to latest versions (ESLint 9.37, typescript-eslint 8.46)
+- Added `globals@16.4.0` and `typescript-eslint` unified package
+- Reorganized package.json for better logical grouping
+- Cleaned up temporary documentation files
+
+**Setup Tool Improvements:**
+- Generated lint commands now use ESLint 9 auto-discovery (no explicit --config flag)
+- Added commented example override pattern in generated config
+- Consistent with README documentation
+
+**Documentation:**
+- README completely rewritten for users with no ESLint knowledge
+- Added visual code examples (Good vs Bad) for all rule categories
+- Comprehensive FAQ and troubleshooting sections
+- CLAUDE.md kept for AI assistant context
 
 ## Quick Start
 
@@ -333,15 +460,21 @@ These are included as direct dependencies, not peer dependencies:
 
 | Dependency | Version | Purpose |
 |------------|---------|---------|
-| `@eslint/js` | ^9.21.0 | ESLint recommended JavaScript rules |
-| `@typescript-eslint/eslint-plugin` | ^8.26.0 | TypeScript linting rules |
-| `@typescript-eslint/parser` | ^8.26.0 | Parses TypeScript for ESLint |
-| `eslint` | ^9.21.0 | The linting engine |
-| `eslint-plugin-import` | ^2.31.0 | Import/export linting and ordering |
-| `eslint-plugin-vue` | ^10.0.0 | Vue.js 3 specific rules |
-| `vue-eslint-parser` | ^10.1.1 | Parses Vue SFC files |
+| `@eslint/compat` | ^1.4.0 | Compatibility layer for flat config |
+| `@eslint/js` | ^9.37.0 | ESLint recommended JavaScript rules |
+| `@jdhillen/release-config` | ^2.0.0 | Shared semantic-release configuration |
+| `@typescript-eslint/eslint-plugin` | ^8.46.0 | TypeScript linting rules |
+| `@typescript-eslint/parser` | ^8.46.0 | Parses TypeScript for ESLint |
+| `eslint` | ^9.37.0 | The linting engine |
+| `eslint-plugin-import` | ^2.32.0 | Import/export linting and ordering |
+| `eslint-plugin-vue` | ^10.5.0 | Vue.js 3 specific rules |
+| `globals` | ^16.4.0 | Global variable definitions (browser, node) |
+| `typescript-eslint` | ^8.46.0 | Unified TypeScript ESLint tooling |
+| `vue-eslint-parser` | ^10.2.0 | Parses Vue SFC files |
 
 **Design decision:** All plugins are bundled to eliminate peer dependency conflicts for consumers.
+
+**Note:** Dependencies are kept up-to-date with latest compatible versions for Node.js 20+.
 
 ### Peer Dependencies
 
@@ -352,8 +485,10 @@ Consumers must install TypeScript themselves.
 
 ### Dev Dependencies
 
+- `commitizen` ^4.3.1 - Interactive commit message helper
+- `cz-conventional-changelog` ^3.3.0 - Conventional commits adapter for commitizen
 - `husky` ^9.1.7 - Git hooks automation
-- `typescript` ^5.8.2 - For development/testing
+- `typescript` ^5.9.3 - For development/testing
 
 ### External Services
 
@@ -585,30 +720,49 @@ The package initially shipped with Prettier integration but removed it 30 minute
 
 **Do NOT suggest re-adding Prettier** - this was a deliberate architectural decision.
 
-#### 2. TypeScript Recommended Rules Are Manually Implemented
+#### 2. Official Presets Over Manual Rules
 
-**File:** [src/index.js:49-64](src/index.js#L49)
-**Comment in code:**
+**File:** [src/index.js](src/index.js)
+**Decision:** Use official preset configurations instead of manually copying rules
+
+**Current approach:**
 ```javascript
-// Include TypeScript ESLint recommended rules manually since
-// tseslint.configs.recommended isn't compatible with flat config
+js.configs.recommended,
+...tseslint.configs.recommended,
+...vuePlugin.configs['flat/recommended'],
 ```
 
-**Why manual?**
-- `@typescript-eslint/eslint-plugin` v8.26.0 doesn't support ESLint v9 flat config
-- Using `tseslint.configs.recommended` fails with the flat config format
-- Workaround: Manually list all 15 recommended rules
+**Why presets?**
+- Automatic updates when presets are improved
+- Maintained by official teams (better than manual copying)
+- Reduces maintenance burden
+- Ensures compatibility with plugin versions
 
-**Maintenance risk:**
-- If TypeScript ESLint updates its recommended rules, this package won't auto-update
-- Must manually track upstream changes
-- Consider subscribing to @typescript-eslint release notes
+**Note on type-checked rules:**
+Type-checked TypeScript rules are disabled by default because they require `tsconfig.json` configuration. This maintains the "zero configuration" philosophy. Users can enable them if needed.
 
-**Future consideration:**
-- When @typescript-eslint adds flat config support, refactor to use preset
-- Until then, manually sync with upstream on each major @typescript-eslint release
+#### 3. Plugin Compatibility with ESLint 9
 
-#### 3. ESLint 9+ Only (No Backwards Compatibility)
+**Decision:** Use `@eslint/compat` for plugins not fully supporting flat config
+
+**Current approach:**
+```javascript
+import { fixupPluginRules } from '@eslint/compat';
+import importPlugin from 'eslint-plugin-import';
+
+plugins: {
+  import: fixupPluginRules(importPlugin)
+}
+```
+
+**Why needed?**
+- `eslint-plugin-import` doesn't fully support ESLint 9 flat config yet
+- `fixupPluginRules` provides compatibility layer
+- Allows using the plugin without waiting for official flat config support
+
+**Package added:** `@eslint/compat@^1.4.0`
+
+#### 4. ESLint 9+ Only (No Backwards Compatibility)
 
 **Decision:** Target only ESLint v9 and its flat config format
 
@@ -623,7 +777,28 @@ The package initially shipped with Prettier integration but removed it 30 minute
 
 **Do NOT add legacy format support** - this would double maintenance burden.
 
-#### 4. All Plugins Bundled as Direct Dependencies
+#### 5. Comprehensive Rule Organization (88 Rules Across 6 Categories)
+
+**Decision:** Organize all rules into clear, documented sections
+
+**Current structure in [src/index.js](src/index.js):**
+1. **Modern JavaScript Rules** (20 rules) - const/let, template literals, destructuring, spread operators
+2. **TypeScript Rules** (10 rules) - explicit types, no any, interface over type
+3. **Naming Conventions** (comprehensive selectors) - camelCase, PascalCase, UPPER_CASE patterns
+4. **Vue.js 3 Rules** (22 rules) - composition API, reactivity, component patterns
+5. **Import/Module Rules** (10 rules) - organization, ordering, alphabetization
+6. **Code Quality & Complexity** (6 rules) - max lines, nesting depth, cyclomatic complexity
+
+**Why comprehensive?**
+- Provides true "set it and forget it" experience
+- Covers modern development patterns
+- Reduces need for custom overrides
+- Educational for developers (documents best practices)
+
+**Maintenance consideration:**
+Rules are carefully chosen and commented. Changes should be deliberate and well-reasoned.
+
+#### 6. All Plugins Bundled as Direct Dependencies
 
 **Decision:** Include all plugins as dependencies (not peer dependencies)
 
@@ -952,13 +1127,11 @@ npm install -g commitizen cz-conventional-changelog
 
 3. **Flat config only** - Will not work with ESLint <9.0.0. No backwards compatibility.
 
-4. **Manual rule sync** - TypeScript recommended rules are hardcoded and don't auto-update with @typescript-eslint releases.
+4. **No tests** - Changes are not validated by automated tests. Always test manually.
 
-5. **No tests** - Changes are not validated by automated tests. Always test manually.
+5. **Leading ./ in bin paths breaks npm** - package.json bin paths must not start with `./`.
 
-6. **Commitizen not installed** - `npm run commit` fails unless Commitizen is globally installed.
-
-7. **Leading ./ in bin paths breaks npm** - package.json bin paths must not start with `./`.
+6. **Electron projects need additional config** - This config handles renderer process (Vue.js) but not main process. Electron main process needs separate config section with Node.js globals only. Do NOT use `@electron-toolkit/eslint-config` packages - they provide no Electron-specific value and incorrectly mix browser + Node.js globals everywhere.
 
 ### Pro Tips
 

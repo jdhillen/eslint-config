@@ -4,6 +4,37 @@ import { existsSync } from 'fs';
 import { readFile, writeFile } from 'fs/promises';
 import { join } from 'path';
 
+async function detectProjectSetup() {
+  const cwd = process.cwd();
+  const packagePath = join(cwd, 'package.json');
+  const tsconfigPath = join(cwd, 'tsconfig.json');
+
+  if (!existsSync(packagePath)) {
+    return null;
+  }
+
+  const packageContent = JSON.parse(await readFile(packagePath, 'utf8'));
+  const allDeps = {
+    ...packageContent.dependencies,
+    ...packageContent.devDependencies,
+    ...packageContent.peerDependencies
+  };
+
+  let framework = 'vanilla';
+  if (allDeps.next || allDeps.remix || allDeps.gatsby) framework = 'react';
+  else if (allDeps.react) framework = 'react';
+  else if (allDeps.nuxt) framework = 'vue';
+  else if (allDeps.vue) framework = 'vue';
+  else if (allDeps['@sveltejs/kit']) framework = 'svelte';
+  else if (allDeps.svelte) framework = 'svelte';
+  else if (allDeps['@angular/core']) framework = 'angular';
+  else if (allDeps.express || allDeps.fastify || allDeps.koa) framework = 'node';
+
+  const typescript = existsSync(tsconfigPath);
+
+  return { framework, typescript };
+}
+
 async function createEslintConfig() {
   const eslintConfigPath = join(process.cwd(), 'eslint.config.js');
 
@@ -14,28 +45,53 @@ async function createEslintConfig() {
 
   const eslintConfig = `import createConfig from '@jdhillen/eslint-config';
 
-// Create config with optional additional folder exclusions
-// Note: node_modules, dist, and build are already ignored by default
-const config = createConfig({
-  ignorePaths: [
-    // Add additional paths to ignore here, for example:
-    // '**/coverage/**',
-    // '**/temp/**',
-    // '**/logs/**'
-  ]
-});
+/**
+ * Universal ESLint Configuration
+ *
+ * Auto-detects:
+ * - Framework (React, Vue, Svelte, Vanilla JS, Node.js)
+ * - Environment (browser, node, universal)
+ * - TypeScript (checks for tsconfig.json)
+ *
+ * Zero configuration required - just export createConfig()
+ * Note: createConfig() is async (required for Svelte support)
+ */
 
-export default [
-  ...config,
-  // You can add your own rules or overrides here
-  // {
-  //   // Example: Override rules for specific file patterns
-  //   files: ['**/tests/**/*.js'],
-  //   rules: {
-  //     'no-console': 'off'
-  //   }
-  // }
-];`;
+// Option 1: Zero Config (Recommended)
+// Auto-detects everything from your project
+export default await createConfig();
+
+// Option 2: Explicit Configuration
+// Uncomment and modify if you need to override auto-detection
+// export default await createConfig({
+//   framework: 'auto',    // 'auto' | 'react' | 'vue' | 'svelte' | 'vanilla' | 'node'
+//   environment: 'auto',  // 'auto' | 'browser' | 'node' | 'universal'
+//   typescript: 'auto',   // 'auto' | true | false
+//   ignorePaths: [
+//     // Additional paths to ignore (node_modules, dist, build already ignored)
+//     '**/coverage/**',
+//     '**/temp/**'
+//   ],
+//   rules: {
+//     // Override specific rules
+//     // 'no-console': 'off'
+//   }
+// });
+
+// Option 3: With Custom Overrides
+// Uncomment to add per-file rule overrides
+// const config = await createConfig();
+// export default [
+//   ...config,
+//   {
+//     files: ['**/tests/**/*.{js,ts}'],
+//     rules: {
+//       'no-console': 'off',
+//       'max-lines-per-function': 'off'
+//     }
+//   }
+// ];
+`;
 
   console.log('📝 Creating eslint.config.js...');
   await writeFile(eslintConfigPath, eslintConfig, 'utf8');
@@ -43,6 +99,15 @@ export default [
 
 async function updatePackageJson() {
   try {
+    const detected = await detectProjectSetup();
+
+    if (detected) {
+      console.log('🔍 Detected project configuration:');
+      console.log(`   Framework: ${detected.framework}`);
+      console.log(`   TypeScript: ${detected.typescript ? 'Yes' : 'No'}`);
+      console.log('');
+    }
+
     const packagePath = join(process.cwd(), 'package.json');
     const packageContent = await readFile(packagePath, 'utf8');
     const packageJson = JSON.parse(packageContent);
@@ -68,7 +133,7 @@ async function updatePackageJson() {
     }
 
     if (modified) {
-      await writeFile(packagePath, JSON.stringify(packageJson, null, 2) + '\n', 'utf8');
+      await writeFile(packagePath, `${JSON.stringify(packageJson, null, 2)  }\n`, 'utf8');
       console.log('✅ Successfully updated package.json');
     } else {
       console.log('✨ No changes needed in package.json');
