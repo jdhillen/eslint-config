@@ -706,6 +706,92 @@ createConfig({
 })
 ```
 
+## 🔧 Troubleshooting
+
+### Wrong framework detected
+
+**Problem:** Auto-detection picks the wrong framework
+
+**Solution:** Explicitly set the framework:
+```javascript
+export default await createConfig({
+  framework: 'react'  // Force React even if Vue is also installed
+});
+```
+
+### TypeScript rules not working
+
+**Problem:** TypeScript rules aren't being applied
+
+**Check:**
+1. Do you have a `tsconfig.json` in your project root?
+2. Is TypeScript installed? `npm list typescript`
+
+**Solution:** Force TypeScript on:
+```javascript
+export default await createConfig({
+  typescript: true
+});
+```
+
+### Too many linting errors
+
+**Problem:** Too many errors to fix at once
+
+**Solution:** Start by fixing auto-fixable issues:
+```bash
+npm run lint:fix
+```
+
+Then gradually address remaining warnings.
+
+### Framework-specific rules not loading
+
+**Problem:** React/Vue/Svelte rules not working
+
+**Check the console output:**
+```
+📦 ESLint Config: react | browser | TypeScript: Yes
+```
+
+This shows what was detected. If it's wrong, check your `package.json` for the framework dependency.
+
+### Angular-specific rules missing
+
+**Problem:** Angular template rules not working
+
+**This is expected.** Angular has its own ESLint ecosystem. Install:
+```bash
+npm install @angular-eslint/eslint-plugin
+```
+
+See: https://github.com/angular-eslint/angular-eslint
+
+### Cannot find module 'svelte' error
+
+**Problem:** Error loading Svelte preset in non-Svelte project
+
+**This shouldn't happen** - Svelte preset uses lazy loading. If you see this:
+1. Make sure you're using the latest version
+2. Check your `eslint.config.js` doesn't manually import Svelte presets
+
+### Performance issues
+
+**Problem:** Linting is slow
+
+**Solutions:**
+1. Add more paths to `ignorePaths`:
+```javascript
+export default await createConfig({
+  ignorePaths: ['**/dist/**', '**/.next/**', '**/build/**']
+});
+```
+
+2. Lint specific directories:
+```bash
+npx eslint src/  # Only lint src directory
+```
+
 ## 📋 Requirements
 
 - **Node.js:** 22.12.0 or higher (Node.js 22 LTS - "Jod")

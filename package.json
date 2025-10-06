@@ -44,7 +44,7 @@
   "scripts": {
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
-    "test": "echo \"No tests specified\"",
+    "test": "node tests/detectors.test.js",
     "commit": "cz",
     "release": "semantic-release",
     "prepare": "husky"
