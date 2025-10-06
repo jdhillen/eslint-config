@@ -71,6 +71,13 @@ This file provides guidance to Claude Code when working with code in this reposi
 - Added all framework options (react, vue, svelte) to inline examples
 - Better guidance for zero-config vs explicit configuration vs custom overrides
 
+**Testing Framework Support:**
+- Built-in Vitest support for `/tests` directory structure
+- Automatically relaxes 7 rules for test files (console, complexity, magic numbers, etc.)
+- Tests can mirror `/src` structure for easy navigation
+- Works with all file types (.js, .ts, .jsx, .tsx, .vue, .svelte)
+- Clean separation of test files from source code
+
 **Phase 1: Universal Framework Support (v3.0.0) - Complete:**
 
 **Architecture Transformation:**

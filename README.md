@@ -180,18 +180,54 @@ Apply different rules to specific files:
 ```javascript
 import createConfig from '@jdhillen/eslint-config';
 
-const config = createConfig();
+const config = await createConfig();
 
 export default [
   ...config,
   {
-    files: ['**/*.test.js', '**/*.spec.js'],
+    files: ['src/legacy/**/*.js'],
     rules: {
-      'no-console': 'off',
-      'max-lines-per-function': 'off'
+      'no-var': 'off',           // Allow var in legacy code
+      'prefer-const': 'warn'     // Downgrade to warning
     }
   }
 ];
+```
+
+## 🧪 Testing Support
+
+**Built-in Vitest support** - Test files in `/tests` directory automatically get relaxed rules:
+
+```
+your-project/
+├── src/
+│   └── utils.js
+└── tests/
+    └── utils.test.js    ← Relaxed linting rules
+```
+
+**Automatically disabled in test files:**
+- `no-console` - Console logging useful for debugging
+- `max-lines-per-function` - Test suites can be long
+- `complexity` - Test setup can be complex
+- `max-statements` - Test setup can have many statements
+- `max-nested-callbacks` - describe/it nesting can be deep
+- `no-magic-numbers` - Tests use hardcoded data
+- `@typescript-eslint/no-explicit-any` - Test mocks use any
+
+**Example test file:**
+```javascript
+// tests/utils.test.js
+import { describe, it, expect } from 'vitest';
+import { formatDate } from '../src/utils';
+
+describe('formatDate', () => {
+  it('formats date correctly', () => {
+    console.log('Testing formatDate'); // ✅ Allowed in tests
+    const result = formatDate(new Date(2025, 0, 1));
+    expect(result).toBe('2025-01-01');
+  });
+});
 ```
 
 ## 📚 What Rules Are Enforced?

@@ -185,7 +185,21 @@ export default async function createConfig(options = {}) {
       break;
   }
 
-  // 8. Node.js scripts override (bin, scripts directories)
+  // 8. Test files override (tests directory for Vitest)
+  config.push({
+    files: ['tests/**/*.{js,ts,jsx,tsx,vue,svelte}'],
+    rules: {
+      'no-console': 'off',                            // Console logging useful for test debugging
+      'max-lines-per-function': 'off',                // Test suites can be lengthy
+      'complexity': 'off',                            // Test setup can be complex
+      'max-statements': 'off',                        // Test setup can have many statements
+      'max-nested-callbacks': 'off',                  // describe/it nesting can be deep
+      'no-magic-numbers': 'off',                      // Tests often use hardcoded test data
+      '@typescript-eslint/no-explicit-any': 'off'     // Test mocks often use any
+    }
+  });
+
+  // 9. Node.js scripts override (bin, scripts directories)
   config.push({
     files: ['**/bin/**/*.js', '**/scripts/**/*.js'],
     languageOptions: {
@@ -199,7 +213,7 @@ export default async function createConfig(options = {}) {
     }
   });
 
-  // 9. User-provided rule overrides (highest priority)
+  // 10. User-provided rule overrides (highest priority)
   if (options.rules && Object.keys(options.rules).length > 0) {
     config.push({
       files: ['**/*.js', '**/*.ts', '**/*.tsx', '**/*.vue', '**/*.jsx', '**/*.svelte'],
