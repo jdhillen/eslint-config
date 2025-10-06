@@ -9,9 +9,6 @@ export default defineConfig({
       reporter: ['text', 'html', 'json'],
       include: ['src/**/*.js'],
       exclude: [
-        'src/presets/frameworks/svelte.js',
-        'src/presets/frameworks/solid.js',
-        'src/presets/frameworks/astro.js',
         'node_modules/**',
         'tests/**'
       ],
