@@ -15,10 +15,10 @@ import typescriptPreset from './presets/typescript.js';
 /**
  * Create a universal ESLint flat config
  *
- * Supports: React, Vue.js, Svelte, Vanilla JS/TS, and auto-detection
+ * Supports: React, Vue.js, Svelte, Solid, Astro, Angular, Vanilla JS/TS, and auto-detection
  *
  * @param {Object} options - Configuration options
- * @param {string} [options.framework='auto'] - Framework: 'auto' | 'react' | 'vue' | 'svelte' | 'vanilla' | 'node'
+ * @param {string} [options.framework='auto'] - Framework: 'auto' | 'react' | 'vue' | 'svelte' | 'solid' | 'astro' | 'angular' | 'vanilla' | 'node'
  * @param {string} [options.environment='auto'] - Environment: 'auto' | 'browser' | 'node' | 'universal'
  * @param {boolean|string} [options.typescript='auto'] - TypeScript: 'auto' | true | false
  * @param {string[]} [options.ignorePaths=[]] - Additional paths to ignore during linting
@@ -93,7 +93,7 @@ export default async function createConfig(options = {}) {
   if (typescript) {
     config.push(...tseslint.configs.recommended);
     config.push({
-      files: ['**/*.js', '**/*.ts', '**/*.tsx', '**/*.vue', '**/*.jsx', '**/*.svelte'],
+      files: ['**/*.js', '**/*.ts', '**/*.tsx', '**/*.vue', '**/*.jsx', '**.svelte', '**.astro'],
       ...typescriptPreset
     });
 
@@ -130,19 +130,19 @@ export default async function createConfig(options = {}) {
   }
 
   config.push({
-    files: ['**/*.js', '**/*.ts', '**/*.tsx', '**/*.vue', '**/*.jsx', '**/*.svelte'],
+    files: ['**/*.js', '**/*.ts', '**/*.tsx', '**/*.vue', '**/*.jsx', '**.svelte', '**.astro'],
     ...envConfig
   });
 
   // 5. Base JavaScript rules (always included)
   config.push({
-    files: ['**/*.js', '**/*.ts', '**/*.tsx', '**/*.vue', '**/*.jsx', '**/*.svelte'],
+    files: ['**/*.js', '**/*.ts', '**/*.tsx', '**/*.vue', '**/*.jsx', '**.svelte', '**.astro'],
     ...basePreset
   });
 
   // 6. Import/export rules (always included)
   config.push({
-    files: ['**/*.js', '**/*.ts', '**/*.tsx', '**/*.vue', '**/*.jsx', '**/*.svelte'],
+    files: ['**/*.js', '**/*.ts', '**/*.tsx', '**/*.vue', '**/*.jsx', '**.svelte', '**.astro'],
     ...importsPreset
   });
 
@@ -160,6 +160,20 @@ export default async function createConfig(options = {}) {
       // Lazy load Svelte preset to avoid requiring svelte package when not used
       const { default: createSveltePreset } = await import('./presets/frameworks/svelte.js');
       config.push(...createSveltePreset());
+      break;
+    }
+
+    case 'solid': {
+      // Lazy load Solid preset to avoid requiring solid-js package when not used
+      const { default: createSolidPreset } = await import('./presets/frameworks/solid.js');
+      config.push(...createSolidPreset());
+      break;
+    }
+
+    case 'astro': {
+      // Lazy load Astro preset to avoid requiring astro package when not used
+      const { default: createAstroPreset } = await import('./presets/frameworks/astro.js');
+      config.push(...createAstroPreset());
       break;
     }
 
@@ -187,7 +201,7 @@ export default async function createConfig(options = {}) {
 
   // 8. Test files override (tests directory for Vitest)
   config.push({
-    files: ['tests/**/*.{js,ts,jsx,tsx,vue,svelte}'],
+    files: ['tests/**/*.{js,ts,jsx,tsx,vue,svelte,astro}'],
     rules: {
       'no-console': 'off',                            // Console logging useful for test debugging
       'max-lines-per-function': 'off',                // Test suites can be lengthy
@@ -216,7 +230,7 @@ export default async function createConfig(options = {}) {
   // 10. User-provided rule overrides (highest priority)
   if (options.rules && Object.keys(options.rules).length > 0) {
     config.push({
-      files: ['**/*.js', '**/*.ts', '**/*.tsx', '**/*.vue', '**/*.jsx', '**/*.svelte'],
+      files: ['**/*.js', '**/*.ts', '**/*.tsx', '**/*.vue', '**/*.jsx', '**.svelte', '**.astro'],
       rules: options.rules
     });
   }

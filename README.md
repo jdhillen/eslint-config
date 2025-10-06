@@ -2,15 +2,15 @@
 
 **Universal ESLint configuration for modern JavaScript and TypeScript projects.**
 
-Works with React, Vue.js, Svelte, Vanilla JS/TS, and Node.js. Auto-detects your framework and TypeScript - zero configuration required.
+Works with React, Vue, Svelte, Solid, Astro, Angular, Vanilla JS/TS, and Node.js. Auto-detects your framework and TypeScript - zero configuration required.
 
 ## ✨ Features
 
 - **🎯 Zero Configuration** - Auto-detects framework, environment, and TypeScript
-- **⚡ Universal** - One package for React, Vue, Svelte, Vanilla JS/TS, and Node.js
+- **⚡ Universal** - One package for React, Vue, Svelte, Solid, Astro, Angular, Vanilla JS/TS, and Node.js
 - **🚀 Modern** - ESLint 9 flat config with latest best practices
 - **📦 Batteries Included** - All plugins bundled, no peer dependency conflicts
-- **🎨 Comprehensive** - 115+ carefully chosen rules for code quality
+- **🎨 Comprehensive** - 140+ carefully chosen rules for code quality
 - **🔧 Flexible** - Override any setting when you need to
 
 ## 📦 Installation
@@ -94,6 +94,55 @@ export default await createConfig();
 - `svelte` in dependencies
 - `@sveltejs/kit` (meta-framework)
 
+### 🔷 Solid.js
+```javascript
+// Auto-detected from package.json
+import createConfig from '@jdhillen/eslint-config';
+export default await createConfig();
+```
+
+**What you get:**
+- Solid reactive primitives rules
+- JSX best practices for Solid
+- Signal/effect validation
+- Conservative 12-rule preset
+
+**Detected when you have:**
+- `solid-js` in dependencies
+
+### 🚀 Astro
+```javascript
+// Auto-detected from package.json
+import createConfig from '@jdhillen/eslint-config';
+export default await createConfig();
+```
+
+**What you get:**
+- Astro component syntax rules
+- Island architecture support
+- Universal environment (browser + node)
+- Accessibility rules
+- Comprehensive 9-rule preset
+
+**Detected when you have:**
+- `astro` in dependencies
+
+### 🅰️ Angular
+```javascript
+// Auto-detected from package.json
+import createConfig from '@jdhillen/eslint-config';
+export default await createConfig();
+```
+
+**What you get:**
+- Base TypeScript and JavaScript rules
+- Warning message about @angular-eslint
+
+**Note:** Angular has its own comprehensive ESLint ecosystem (`@angular-eslint`). This config provides base rules only. For Angular-specific rules, install `@angular-eslint/eslint-plugin`.
+
+**Detected when you have:**
+- `@angular/core` in dependencies
+
 ### 📦 Vanilla JavaScript/TypeScript
 ```javascript
 // Auto-detected - no framework found
@@ -135,7 +184,7 @@ export default await createConfig();
 ```
 
 Auto-detects:
-- ✅ Framework (React/Vue/Svelte/Vanilla/Node)
+- ✅ Framework (React/Vue/Svelte/Solid/Astro/Angular/Vanilla/Node)
 - ✅ Environment (browser/node/universal)
 - ✅ TypeScript (checks for tsconfig.json)
 
@@ -147,7 +196,7 @@ Override auto-detection when needed:
 import createConfig from '@jdhillen/eslint-config';
 
 export default await createConfig({
-  framework: 'react',      // 'react' | 'vue' | 'svelte' | 'vanilla' | 'node'
+  framework: 'react',      // 'react' | 'vue' | 'svelte' | 'solid' | 'astro' | 'angular' | 'vanilla' | 'node'
   environment: 'browser',  // 'browser' | 'node' | 'universal'
   typescript: true,        // true | false | 'auto'
   ignorePaths: [
@@ -444,6 +493,9 @@ The config automatically detects your framework from `package.json`:
 | `nuxt` | Vue.js | Vue 3 rules (Nuxt uses Vue) |
 | `svelte` | Svelte | Svelte 5 rules + component parsing |
 | `@sveltejs/kit` | Svelte | Svelte rules (SvelteKit uses Svelte) |
+| `solid-js` | Solid.js | Solid reactivity + JSX rules |
+| `astro` | Astro | Astro components + islands + a11y |
+| `@angular/core` | Angular | Base rules + @angular-eslint warning |
 | `express`, `fastify` | Node.js | Node globals, no browser |
 | None of above | Vanilla | Base JS/TS rules only |
 
@@ -453,11 +505,11 @@ The config automatically detects your framework from `package.json`:
 - ✅ Auto-detects framework (Airbnb requires manual setup)
 - ✅ Modern ESLint 9 flat config (Airbnb still uses legacy format)
 - ✅ All plugins included (Airbnb has peer dependency issues)
-- ✅ Vue + Svelte support (Airbnb is React-only)
+- ✅ Multi-framework support: React, Vue, Svelte, Solid, Astro, Angular (Airbnb is React-only)
 
 **vs. eslint:recommended:**
-- ✅ 115 rules vs. 20 rules (much more comprehensive)
-- ✅ Framework-specific rules (React Hooks, Vue reactivity, Svelte runes)
+- ✅ 140+ rules vs. 20 rules (much more comprehensive)
+- ✅ Framework-specific rules (React Hooks, Vue reactivity, Svelte runes, Solid signals, Astro islands)
 - ✅ TypeScript support built-in
 - ✅ Modern syntax preferences (template literals, destructuring, etc.)
 

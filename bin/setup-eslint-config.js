@@ -27,6 +27,8 @@ async function detectProjectSetup() {
   else if (allDeps.vue) framework = 'vue';
   else if (allDeps['@sveltejs/kit']) framework = 'svelte';
   else if (allDeps.svelte) framework = 'svelte';
+  else if (allDeps['solid-js']) framework = 'solid';
+  else if (allDeps.astro) framework = 'astro';
   else if (allDeps['@angular/core']) framework = 'angular';
   else if (allDeps.express || allDeps.fastify || allDeps.koa) framework = 'node';
 
@@ -49,7 +51,7 @@ async function createEslintConfig() {
  * Universal ESLint Configuration
  *
  * Auto-detects:
- * - Framework (React, Vue, Svelte, Vanilla JS, Node.js)
+ * - Framework (React, Vue, Svelte, Solid, Astro, Angular, Vanilla JS, Node.js)
  * - Environment (browser, node, universal)
  * - TypeScript (checks for tsconfig.json)
  *
@@ -64,7 +66,7 @@ export default await createConfig();
 // Option 2: Explicit Configuration
 // Uncomment and modify if you need to override auto-detection
 // export default await createConfig({
-//   framework: 'auto',    // 'auto' | 'react' | 'vue' | 'svelte' | 'vanilla' | 'node'
+//   framework: 'auto',    // 'auto' | 'react' | 'vue' | 'svelte' | 'solid' | 'astro' | 'angular' | 'vanilla' | 'node'
 //   environment: 'auto',  // 'auto' | 'browser' | 'node' | 'universal'
 //   typescript: 'auto',   // 'auto' | true | false
 //   ignorePaths: [

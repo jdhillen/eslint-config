@@ -4,7 +4,7 @@ This file provides guidance to Claude Code when working with code in this reposi
 
 ## Repository Overview
 
-**@jdhillen/eslint-config** is a universal ESLint configuration package for modern JavaScript/TypeScript projects. It supports React, Vue.js 3, Svelte, Vanilla JS/TS, and Node.js with automatic framework detection and zero configuration required. Built on ESLint v9's modern flat config format with industry best practices.
+**@jdhillen/eslint-config** is a universal ESLint configuration package for modern JavaScript/TypeScript projects. It supports React, Vue, Svelte, Solid, Astro, Angular, Vanilla JS/TS, and Node.js with automatic framework detection and zero configuration required. Built on ESLint v9's modern flat config format with industry best practices.
 
 ### Project Statistics
 - Primary language: JavaScript (ES Modules)
@@ -12,13 +12,13 @@ This file provides guidance to Claude Code when working with code in this reposi
 - Node.js requirement: >=22.12.0 (Node.js 22 LTS "Jod")
 - Lines of code: ~1,500+ (modular preset architecture)
 - Active since: March 7, 2025
-- Current version: 3.1.0 (Phase 2 in progress)
+- Current version: 3.2.0 (Phase 3 in progress)
 - Main maintainer: J.D. Hillen
 - Repository: https://github.com/jdhillen/eslint-config
 - Published package: @jdhillen/eslint-config
 
 ### Key Characteristics
-- **Universal Framework Support** - React, Vue.js, Svelte, Vanilla JS/TS, Node.js (Phase 2 in progress)
+- **Universal Framework Support** - React, Vue, Svelte, Solid, Astro, Angular, Vanilla JS/TS, Node.js (Phase 3 in progress)
 - **Auto-Detection** - Automatically detects framework, environment, and TypeScript from project
 - **Zero Configuration** - Works out of the box with sensible defaults
 - **Modular Architecture** - Preset-based system for maintainability
@@ -26,8 +26,8 @@ This file provides guidance to Claude Code when working with code in this reposi
 - **All plugins bundled** as direct dependencies (eliminates peer dependency conflicts)
 - **TypeScript optional** - Works with or without TypeScript
 - **Deliberately excludes Prettier** (removed after v2.0.0 - see [Hidden Context](#hidden-context))
-- **Official presets** (typescript-eslint, vue, react, svelte) instead of manual rule copying
-- **Comprehensive rules** - 115+ organized rules optimized for each framework
+- **Official presets** (typescript-eslint, vue, react, svelte, solid, astro) instead of manual rule copying
+- **Comprehensive rules** - 140+ organized rules optimized for each framework
 - **Automated CLI setup** tool
 - **Semantic versioning** with automated release pipeline
 - **Requires Node.js >=22.12.0** (Node.js 22 LTS "Jod")
@@ -35,7 +35,49 @@ This file provides guidance to Claude Code when working with code in this reposi
 
 ### Recent Major Changes
 
-**Phase 2: Svelte Support (v3.1.0) - In Progress:**
+**Phase 3: Solid + Astro + Angular Support (v3.2.0) - In Progress:**
+
+**Solid.js Framework Added:**
+- `eslint-plugin-solid@^0.14.5` - Solid reactivity and JSX rules
+- Conservative 12-rule preset focused on reactive primitives
+- Signal/effect/memo validation rules
+- JSX best practices specific to Solid
+- Lazy loading to avoid requiring solid-js package when not used
+
+**Astro Framework Added:**
+- `eslint-plugin-astro@^1.3.1` and `astro-eslint-parser@^1.2.2`
+- Comprehensive 9-rule preset for Astro components
+- Island architecture support
+- Universal environment (browser + node) auto-detection
+- Built-in accessibility rules from jsx-a11y
+- Lazy loading to avoid requiring astro package when not used
+
+**Angular Framework Support:**
+- Auto-detection from `@angular/core` dependency
+- Provides base TypeScript/JavaScript rules
+- Warning message directing users to `@angular-eslint` for Angular-specific rules
+- No additional dependencies (Angular has its own ecosystem)
+
+**Integration Updates:**
+- Added `.astro` extension to all file pattern matchers
+- Updated lazy loading switch to include Solid and Astro cases
+- Added solid-js and astro as optional peer dependencies
+- Extended test file support to include .astro files
+
+**Package Metadata:**
+- Description updated to include Solid, Astro, Angular
+- Keywords added: solid, astro, angular
+- Peer dependencies: astro (>=3.0.0), solid-js (>=1.0.0)
+
+**Documentation:**
+- Added Solid.js section to README with reactive primitives explanation
+- Added Astro section with island architecture details
+- Added Angular section with @angular-eslint guidance
+- Updated framework detection table with all new frameworks
+- Updated rule count from 115 to 140 rules
+- Updated all comparison tables and auto-detect lists
+
+**Phase 2: Svelte Support + Testing (v3.1.0) - Complete:**
 
 **Svelte Framework Added:**
 - `eslint-plugin-svelte@^3.12.4` - Component and template rules
