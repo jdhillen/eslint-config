@@ -42,205 +42,48 @@ npm run lint:fix    # Auto-fix issues
 
 ## 🎭 Supported Frameworks
 
-### ⚛️ React (+ Next.js, Remix, Gatsby)
+| Framework | What You Get | Auto-detected From |
+|-----------|--------------|-------------------|
+| **⚛️ React** | Hooks rules, JSX best practices, React 17+ transform (15 rules) | `react`, `next`, `remix`, `gatsby` |
+| **🟢 Vue 3** | Composition API, `<script setup>`, template rules (22 rules) | `vue`, `nuxt` |
+| **🟠 Svelte** | Svelte 5 runes, a11y, performance optimizations (27 rules) | `svelte`, `@sveltejs/kit` |
+| **🔷 Solid** | Reactive primitives, signals, JSX for Solid (12 rules) | `solid-js` |
+| **🚀 Astro** | Component syntax, island architecture, a11y (9 rules) | `astro` |
+| **🅰️ Angular** | Base TypeScript rules (use @angular-eslint for Angular-specific) | `@angular/core` |
+| **📦 Vanilla** | Modern JS/TS, imports, code quality | No framework detected |
+| **🟦 Node.js** | Node globals, console allowed, CommonJS support | `express`, `fastify`, `koa` |
+
+**Simple setup for any framework:**
+
 ```javascript
-// Auto-detected from package.json
 import createConfig from '@jdhillen/eslint-config';
-export default await createConfig();
+
+export default await createConfig();  // Auto-detects everything
 ```
-
-**What you get:**
-- React Hooks rules (prevent common mistakes)
-- JSX best practices
-- React 17+ new JSX transform support
-- Conservative 15-rule preset (essential only)
-
-**Detected when you have:**
-- `react` or `react-dom` in dependencies
-- `next`, `remix`, or `gatsby` (meta-frameworks)
-
-### 🟢 Vue.js 3 (+ Nuxt)
-```javascript
-// Auto-detected from package.json
-import createConfig from '@jdhillen/eslint-config';
-export default await createConfig();
-```
-
-**What you get:**
-- Vue 3 Composition API rules
-- `<script setup>` best practices
-- Template and directive rules
-- Comprehensive 22-rule Vue preset
-
-**Detected when you have:**
-- `vue` in dependencies
-- `nuxt` (meta-framework)
-
-### 🟠 Svelte (+ SvelteKit)
-```javascript
-// Auto-detected from package.json
-import createConfig from '@jdhillen/eslint-config';
-export default await createConfig();
-```
-
-**What you get:**
-- Svelte 5 runes mode support
-- Component best practices
-- Accessibility (a11y) rules
-- Performance optimizations
-- Comprehensive 27-rule Svelte preset
-
-**Detected when you have:**
-- `svelte` in dependencies
-- `@sveltejs/kit` (meta-framework)
-
-### 🔷 Solid.js
-```javascript
-// Auto-detected from package.json
-import createConfig from '@jdhillen/eslint-config';
-export default await createConfig();
-```
-
-**What you get:**
-- Solid reactive primitives rules
-- JSX best practices for Solid
-- Signal/effect validation
-- Conservative 12-rule preset
-
-**Detected when you have:**
-- `solid-js` in dependencies
-
-### 🚀 Astro
-```javascript
-// Auto-detected from package.json
-import createConfig from '@jdhillen/eslint-config';
-export default await createConfig();
-```
-
-**What you get:**
-- Astro component syntax rules
-- Island architecture support
-- Universal environment (browser + node)
-- Accessibility rules
-- Comprehensive 9-rule preset
-
-**Detected when you have:**
-- `astro` in dependencies
-
-### 🅰️ Angular
-```javascript
-// Auto-detected from package.json
-import createConfig from '@jdhillen/eslint-config';
-export default await createConfig();
-```
-
-**What you get:**
-- Base TypeScript and JavaScript rules
-- Warning message about @angular-eslint
-
-**Note:** Angular has its own comprehensive ESLint ecosystem (`@angular-eslint`). This config provides base rules only. For Angular-specific rules, install `@angular-eslint/eslint-plugin`.
-
-**Detected when you have:**
-- `@angular/core` in dependencies
-
-### 📦 Vanilla JavaScript/TypeScript
-```javascript
-// Auto-detected - no framework found
-import createConfig from '@jdhillen/eslint-config';
-export default await createConfig();
-```
-
-**What you get:**
-- Modern JavaScript (ES2015+) rules
-- TypeScript rules (if tsconfig.json exists)
-- Import/export organization
-- Code quality and complexity rules
-
-**Perfect for:**
-- Libraries and utilities
-- Shared packages
-- Browser extensions
-- Any non-framework code
-
-### 🟦 Node.js Backend
-
-Auto-detected when your project has Node.js indicators (Express, Fastify, etc.) or server files.
-
-**What you get:**
-- Node.js globals (`process`, `__dirname`, `require`)
-- Console statements allowed
-- CommonJS patterns allowed
 
 ## 🔧 Configuration
 
 ### Zero Config (Recommended)
 
-Just import and export - auto-detection handles everything:
-
 ```javascript
 import createConfig from '@jdhillen/eslint-config';
 
-export default await createConfig();
+export default await createConfig();  // Auto-detects framework, environment, TypeScript
 ```
 
-Auto-detects:
-- ✅ Framework (React/Vue/Svelte/Solid/Astro/Angular/Vanilla/Node)
-- ✅ Environment (browser/node/universal)
-- ✅ TypeScript (checks for tsconfig.json)
-
-### Explicit Configuration
-
-Override auto-detection when needed:
+### Override Options
 
 ```javascript
-import createConfig from '@jdhillen/eslint-config';
-
 export default await createConfig({
-  framework: 'react',      // 'react' | 'vue' | 'svelte' | 'solid' | 'astro' | 'angular' | 'vanilla' | 'node'
+  framework: 'react',      // Force specific framework
   environment: 'browser',  // 'browser' | 'node' | 'universal'
   typescript: true,        // true | false | 'auto'
-  ignorePaths: [
-    '**/coverage/**',
-    '**/temp/**'
-  ]
-});
-```
-
-### Custom Rules
-
-Add your own rules or override existing ones:
-
-```javascript
-import createConfig from '@jdhillen/eslint-config';
-
-export default await createConfig({
+  ignorePaths: ['**/coverage/**', '**/temp/**'],
   rules: {
-    'no-console': 'off',           // Allow console everywhere
-    'max-lines': ['warn', 1000],   // Increase line limit
-    'complexity': 'off'            // Disable complexity check
+    'no-console': 'off',   // Override any rule
+    'max-lines': ['warn', 1000]
   }
 });
-```
-
-### Per-File Overrides
-
-Apply different rules to specific files:
-
-```javascript
-import createConfig from '@jdhillen/eslint-config';
-
-const config = await createConfig();
-
-export default [
-  ...config,
-  {
-    files: ['src/legacy/**/*.js'],
-    rules: {
-      'no-var': 'off',           // Allow var in legacy code
-      'prefer-const': 'warn'     // Downgrade to warning
-    }
-  }
-];
 ```
 
 ## 🧪 Testing Support
@@ -283,203 +126,46 @@ describe('formatDate', () => {
 
 ### Modern JavaScript (20 rules)
 
-**Built on ECMAScript 2025 (ES2025) features including:**
-- Iterator helpers for functional programming
-- Set methods (union, intersection, difference)
-- RegExp improvements (escape method, pattern modifiers)
-- Promise.try() for safer promise handling
-- Import attributes for JSON modules
-- Float16Array for efficient memory usage
-
-**Enforces:**
 - `const` over `let`, never `var`
-- Template literals over string concatenation
-- Arrow functions for callbacks
-- Destructuring where possible
-- Spread operator over `.apply()`
-- Object shorthand syntax
+- Template literals, arrow functions, destructuring
+- Spread operator, object shorthand
 - `===` instead of `==`
 - Async/await best practices
+- Built on ES2025 features
 
-**Example:**
-```javascript
-// ✅ Good
-const name = 'John';
-const fullName = `${first} ${last}`;
-const items = users.filter(u => u.active);
+### TypeScript (10 rules + Naming)
 
-// ❌ Bad
-var name = 'John';
-const fullName = first + ' ' + last;
-const items = users.filter(function(u) { return u.active; });
-```
+- Avoid `any` (warns)
+- `interface` over `type` for objects
+- `import type` for type-only imports
+- **Naming:** `camelCase` variables, `PascalCase` classes/types, `UPPER_CASE` constants
 
-### TypeScript (10 rules + Naming Conventions)
+### React (15 rules)
 
-**Enforces:**
-- Avoid `any` (warns, doesn't error)
-- Use `interface` over `type` for object types
-- Use `import type` for type-only imports
-- Naming conventions for consistency
-
-**Naming conventions:**
-- `camelCase` for variables, functions, parameters
-- `PascalCase` for classes, interfaces, types, components
-- `UPPER_CASE` for constants
-- `_` prefix for private members and unused parameters
-
-**Example:**
-```typescript
-// ✅ Good
-const userName = 'John';
-interface UserData { id: number; }
-import type { User } from './types';
-
-// ❌ Bad
-const UserName = 'John';
-type UserData = { id: number; };
-import { User } from './types'; // User is only used as a type
-```
-
-### React Rules (15 rules - Conservative)
-
-**Enforces:**
-- Hooks rules (correct dependencies, proper order)
-- No React import in React 17+ (new JSX transform)
+- Hooks rules (dependencies, order)
+- No React import (React 17+)
 - Self-closing components
-- Boolean props without explicit `={true}`
-- Arrow function components
 - Keys in lists
-- No `dangerouslySetInnerHTML` (warns only)
 
-**Example:**
-```jsx
-// ✅ Good
-const Button = ({ active, onClick }) => (
-  <button className="btn" disabled={!active} onClick={onClick} />
-);
+### Vue 3 (22 rules)
 
-// ❌ Bad
-function Button(props) {
-  return (
-    <button className="btn" disabled={active === true} onClick={onClick}></button>
-  );
-}
-```
-
-### Vue.js 3 Rules (22 rules - Comprehensive)
-
-**Enforces:**
 - `<script setup>` syntax
-- PascalCase for components in templates
-- Self-closing tags
-- No props destructuring (loses reactivity)
-- Proper `defineProps` and `defineEmits` order
-- Kebab-case for attributes and events
+- PascalCase components
+- No props destructuring
 - Shorthand directives (`:` and `@`)
 
-**Example:**
-```vue
-<!-- ✅ Good -->
-<template>
-  <MyComponent :value="data" @click="handler" />
-</template>
+### Svelte (27 rules)
 
-<script setup lang="ts">
-const props = defineProps<{ value: string }>();
-const emit = defineEmits<{ update: [value: string] }>();
-</script>
+- Svelte 5 runes support
+- Accessibility (a11y)
+- Reactive store access
+- No direct DOM manipulation
 
-<!-- ❌ Bad -->
-<template>
-  <my-component v-bind:value="data" v-on:click="handler"></my-component>
-</template>
+### Import/Export (10 rules)
 
-<script lang="ts">
-export default {
-  props: ['value'],
-  setup(props) {
-    const { value } = props; // Loses reactivity!
-  }
-}
-</script>
-```
-
-### Svelte Rules (27 rules)
-
-**Enforces:**
-- Svelte 5 runes mode best practices
-- Component naming and structure
-- Accessibility (a11y) compliance
-- Performance optimizations
-- Template syntax and formatting
-
-**Categories:**
-- **Core Best Practices (9 rules)** - No `@html`, reactive store access, optimized styles
-- **Accessibility (8 rules)** - ARIA attributes, keyboard navigation, semantic HTML
-- **Svelte 5 Runes (4 rules)** - Block lang enforcement, no direct DOM manipulation
-- **Code Style (6 rules)** - Shorthand attributes/directives, consistent quotes and indentation
-
-**Example:**
-```svelte
-<!-- ✅ Good -->
-<script lang="ts">
-  import { writable } from 'svelte/store';
-
-  let count = $state(0);
-  const store = writable(0);
-
-  function increment() {
-    count++;
-  }
-</script>
-
-<button on:click={increment} type="button">
-  Count: {count} | Store: {$store}
-</button>
-
-<!-- ❌ Bad -->
-<script>
-  let count = 0;
-  const store = writable(0);
-
-  function increment() {
-    document.querySelector('button').textContent = count;
-  }
-</script>
-
-<button on:click={increment}>
-  Count: {count} | Store: {store}
-</button>
-```
-
-### Import/Export Rules (10 rules)
-
-**Enforces:**
-- Consistent import order (built-in → external → internal → relative)
-- Alphabetical ordering within groups
-- Newlines between import groups
-- No duplicate imports
-- Imports at top of file
-
-**Example:**
-```javascript
-// ✅ Good
-import { readFile } from 'fs';
-
-import axios from 'axios';
-import react from 'react';
-
-import { formatDate } from '@/utils';
-
-import Button from './Button';
-
-// ❌ Bad
-import Button from './Button';
-import axios from 'axios';
-import { formatDate } from '@/utils';
-import { readFile } from 'fs';
-```
+- Consistent order: built-in → external → internal → relative
+- Alphabetical within groups
+- Newlines between groups
 
 ## 🎓 Framework Detection Examples
 
@@ -501,98 +187,9 @@ The config automatically detects your framework from `package.json`:
 
 ## 🆚 vs. Other Configs
 
-**vs. Airbnb:**
-- ✅ Auto-detects framework (Airbnb requires manual setup)
-- ✅ Modern ESLint 9 flat config (Airbnb still uses legacy format)
-- ✅ All plugins included (Airbnb has peer dependency issues)
-- ✅ Multi-framework support: React, Vue, Svelte, Solid, Astro, Angular (Airbnb is React-only)
-
-**vs. eslint:recommended:**
-- ✅ 140+ rules vs. 20 rules (much more comprehensive)
-- ✅ Framework-specific rules (React Hooks, Vue reactivity, Svelte runes, Solid signals, Astro islands)
-- ✅ TypeScript support built-in
-- ✅ Modern syntax preferences (template literals, destructuring, etc.)
-
-**vs. Standard:**
-- ✅ More configurable (Standard is zero-config but inflexible)
-- ✅ TypeScript support (Standard has poor TS support)
-- ✅ Framework-aware (Standard is framework-agnostic)
-- ✅ ESLint 9 (Standard still on ESLint 8)
-
-## 🔥 Real-World Examples
-
-### Electron App (Main + Renderer)
-
-```javascript
-import createConfig from '@jdhillen/eslint-config';
-
-// Main process (Node.js)
-const mainConfig = createConfig({
-  framework: 'vanilla',
-  environment: 'node'
-});
-
-// Renderer process (React + Browser)
-const rendererConfig = createConfig({
-  framework: 'react',
-  environment: 'browser'
-});
-
-export default [
-  {
-    ...mainConfig[0],
-    files: ['src/main/**/*.js']
-  },
-  {
-    ...rendererConfig[0],
-    files: ['src/renderer/**/*.{js,jsx,ts,tsx}']
-  }
-];
-```
-
-### Monorepo (Multiple Frameworks)
-
-```javascript
-import createConfig from '@jdhillen/eslint-config';
-
-export default [
-  // React frontend app
-  {
-    files: ['apps/web/**/*.{js,jsx,ts,tsx}'],
-    ...createConfig({ framework: 'react' })[0]
-  },
-  // Vue admin app
-  {
-    files: ['apps/admin/**/*.{js,vue,ts}'],
-    ...createConfig({ framework: 'vue' })[0]
-  },
-  // Node.js API
-  {
-    files: ['apps/api/**/*.{js,ts}'],
-    ...createConfig({ environment: 'node' })[0]
-  },
-  // Shared packages (vanilla)
-  {
-    files: ['packages/**/*.{js,ts}'],
-    ...createConfig({ framework: 'vanilla' })[0]
-  }
-];
-```
-
-### Next.js with Strict TypeScript
-
-```javascript
-import createConfig from '@jdhillen/eslint-config';
-
-export default await createConfig({
-  framework: 'react',  // Next.js uses React
-  typescript: true,
-  rules: {
-    '@typescript-eslint/no-explicit-any': 'error',  // Strict: no any allowed
-    '@typescript-eslint/explicit-function-return-type': 'warn'  // Encourage return types
-  }
-});
-```
+- **vs. Airbnb:** Auto-detects 8 frameworks, ESLint 9 flat config, no peer deps
+- **vs. eslint:recommended:** 140+ rules (7x more), framework-aware, TypeScript built-in
+- **vs. Standard:** More configurable, better TypeScript, framework support, ESLint 9
 
 ## 💡 VS Code Integration
 
@@ -619,178 +216,28 @@ Now ESLint runs automatically on save!
 
 ## ❓ Common Questions
 
-### Why am I seeing errors on first run?
+**Seeing errors on first run?** Run `npm run lint:fix` to auto-fix, then manually fix remaining issues.
 
-The first time you run ESLint on an existing project, you'll see errors for issues that already existed. This is normal!
+**Disable specific rules?** Add to config: `rules: { 'no-console': 'off' }` or single line: `// eslint-disable-next-line no-console`
 
-**What to do:**
-1. Run `npm run lint:fix` to auto-fix what can be fixed
-2. Review remaining errors and fix manually
-3. Going forward, ESLint will keep your code clean
+**Works without TypeScript?** Yes. Auto-detects from `tsconfig.json` presence.
 
-### Can I disable specific rules?
+**Auto-detection failing?** Check `package.json` has dependencies, or explicitly set: `createConfig({ framework: 'react' })`
 
-Yes! Add them to your config:
-
-```javascript
-export default await createConfig({
-  rules: {
-    'no-console': 'off',  // Disable entirely
-    'max-lines': 'warn'   // Change to warning
-  }
-});
-```
-
-Or disable for a single line:
-
-```javascript
-// eslint-disable-next-line no-console
-console.log('Important debug message');
-```
-
-### Does this work without TypeScript?
-
-Yes! TypeScript is optional. The config auto-detects if `tsconfig.json` exists:
-- **With TypeScript:** Full TS rules + naming conventions
-- **Without TypeScript:** Just JavaScript rules
-
-### Why does auto-detection fail?
-
-Auto-detection relies on finding dependencies in `package.json`. If it fails:
-
-1. Make sure you've run `npm install` (package.json needs dependencies)
-2. Explicitly set framework: `createConfig({ framework: 'react' })`
-3. Check console output - it tells you what was detected
-
-### Can I use this with Prettier?
-
-Yes, but configure Prettier separately for formatting. This package handles code quality, not formatting.
-
-**Best practice:**
-- ESLint: Code quality (bugs, patterns, best practices)
-- Prettier: Formatting (spaces, quotes, line length)
-
-## 🐛 Troubleshooting
-
-### "Cannot find module '@jdhillen/eslint-config'"
-
-Make sure you installed it:
-```bash
-npm install --save-dev @jdhillen/eslint-config
-```
-
-### "ESLint couldn't find the config"
-
-Check your import syntax in `eslint.config.js`:
-```javascript
-import createConfig from '@jdhillen/eslint-config'; // ✅ Correct (ES modules)
-```
-
-### VS Code not showing errors
-
-1. Install ESLint extension
-2. Check `.vscode/settings.json` has `"eslint.experimental.useFlatConfig": true`
-3. Restart VS Code
-4. Check Output panel (View → Output → ESLint) for errors
-
-### Linting is slow
-
-Add more folders to ignore:
-```javascript
-createConfig({
-  ignorePaths: [
-    '**/coverage/**',
-    '**/tmp/**',
-    '**/*.min.js'
-  ]
-})
-```
+**Use with Prettier?** Yes. ESLint = code quality, Prettier = formatting. Configure separately.
 
 ## 🔧 Troubleshooting
 
-### Wrong framework detected
-
-**Problem:** Auto-detection picks the wrong framework
-
-**Solution:** Explicitly set the framework:
-```javascript
-export default await createConfig({
-  framework: 'react'  // Force React even if Vue is also installed
-});
-```
-
-### TypeScript rules not working
-
-**Problem:** TypeScript rules aren't being applied
-
-**Check:**
-1. Do you have a `tsconfig.json` in your project root?
-2. Is TypeScript installed? `npm list typescript`
-
-**Solution:** Force TypeScript on:
-```javascript
-export default await createConfig({
-  typescript: true
-});
-```
-
-### Too many linting errors
-
-**Problem:** Too many errors to fix at once
-
-**Solution:** Start by fixing auto-fixable issues:
-```bash
-npm run lint:fix
-```
-
-Then gradually address remaining warnings.
-
-### Framework-specific rules not loading
-
-**Problem:** React/Vue/Svelte rules not working
-
-**Check the console output:**
-```
-📦 ESLint Config: react | browser | TypeScript: Yes
-```
-
-This shows what was detected. If it's wrong, check your `package.json` for the framework dependency.
-
-### Angular-specific rules missing
-
-**Problem:** Angular template rules not working
-
-**This is expected.** Angular has its own ESLint ecosystem. Install:
-```bash
-npm install @angular-eslint/eslint-plugin
-```
-
-See: https://github.com/angular-eslint/angular-eslint
-
-### Cannot find module 'svelte' error
-
-**Problem:** Error loading Svelte preset in non-Svelte project
-
-**This shouldn't happen** - Svelte preset uses lazy loading. If you see this:
-1. Make sure you're using the latest version
-2. Check your `eslint.config.js` doesn't manually import Svelte presets
-
-### Performance issues
-
-**Problem:** Linting is slow
-
-**Solutions:**
-1. Add more paths to `ignorePaths`:
-```javascript
-export default await createConfig({
-  ignorePaths: ['**/dist/**', '**/.next/**', '**/build/**']
-});
-```
-
-2. Lint specific directories:
-```bash
-npx eslint src/  # Only lint src directory
-```
+| Issue | Solution |
+|-------|----------|
+| **"Cannot find module"** | Run `npm install --save-dev @jdhillen/eslint-config` |
+| **VS Code not working** | Install ESLint extension, add `"eslint.experimental.useFlatConfig": true` to settings, restart |
+| **Wrong framework detected** | Explicitly set: `createConfig({ framework: 'react' })` |
+| **TypeScript rules not working** | Ensure `tsconfig.json` exists, or force: `createConfig({ typescript: true })` |
+| **Too many errors** | Run `npm run lint:fix` to auto-fix, then address remaining issues gradually |
+| **Linting is slow** | Add to `ignorePaths`: `['**/dist/**', '**/.next/**', '**/build/**']` |
+| **Angular rules missing** | This is expected. Install `@angular-eslint/eslint-plugin` for Angular-specific rules |
+| **Framework rules not loading** | Check console output shows correct framework: `📦 ESLint Config: react | browser | TypeScript: Yes` |
 
 ## 📋 Requirements
 
