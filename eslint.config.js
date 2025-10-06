@@ -11,5 +11,5 @@ const config = createConfig({
 
 export default [
   ...config
-  // Add project-specific rules here if needed
+  // You can add your own rules or overrides here
 ];

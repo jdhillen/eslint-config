@@ -28,6 +28,13 @@ const config = createConfig({
 export default [
   ...config,
   // You can add your own rules or overrides here
+  // {
+  //   // Example: Override rules for specific file patterns
+  //   files: ['**/tests/**/*.js'],
+  //   rules: {
+  //     'no-console': 'off'
+  //   }
+  // }
 ];`;
 
   console.log('📝 Creating eslint.config.js...');
@@ -46,7 +53,7 @@ async function updatePackageJson() {
 
     if (!packageJson.scripts.lint) {
       console.log('📝 Adding lint script...');
-      packageJson.scripts.lint = 'eslint --config eslint.config.js .';
+      packageJson.scripts.lint = 'eslint .';
       modified = true;
     } else {
       console.log('ℹ️ Lint script already exists');
@@ -54,7 +61,7 @@ async function updatePackageJson() {
 
     if (!packageJson.scripts['lint:fix']) {
       console.log('📝 Adding lint:fix script...');
-      packageJson.scripts['lint:fix'] = 'eslint --fix --config eslint.config.js .';
+      packageJson.scripts['lint:fix'] = 'eslint --fix .';
       modified = true;
     } else {
       console.log('ℹ️ lint:fix script already exists');
