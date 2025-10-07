@@ -15,6 +15,11 @@ import importsPreset from './presets/imports.js';
 import typescriptPreset from './presets/typescript.js';
 
 /**
+ * File patterns for all supported source file types
+ */
+const SOURCE_FILES = ['**/*.js', '**/*.ts', '**/*.tsx', '**/*.vue', '**/*.jsx', '**/*.svelte', '**/*.astro'];
+
+/**
  * Add framework-specific configuration to config array
  */
 async function addFrameworkConfig(config, framework) {
@@ -77,7 +82,7 @@ function getEnvironmentConfig(environment) {
 function addTypeScriptConfig(config) {
   config.push(...tseslint.configs.recommended);
   config.push({
-    files: ['**/*.js', '**/*.ts', '**/*.tsx', '**/*.vue', '**/*.jsx', '**/*.svelte', '**/*.astro'],
+    files: SOURCE_FILES,
     ...typescriptPreset
   });
 
@@ -131,7 +136,7 @@ function addOverrides(config, options) {
   // User-provided rule overrides
   if (options.rules && Object.keys(options.rules).length > 0) {
     config.push({
-      files: ['**/*.js', '**/*.ts', '**/*.tsx', '**/*.vue', '**/*.jsx', '**/*.svelte', '**/*.astro'],
+      files: SOURCE_FILES,
       rules: options.rules
     });
   }
@@ -212,19 +217,19 @@ export default async function createConfig(options = {}) {
   // 4. Environment configuration
   const envConfig = getEnvironmentConfig(environment);
   config.push({
-    files: ['**/*.js', '**/*.ts', '**/*.tsx', '**/*.vue', '**/*.jsx', '**/*.svelte', '**/*.astro'],
+    files: SOURCE_FILES,
     ...envConfig
   });
 
   // 5. Base JavaScript rules
   config.push({
-    files: ['**/*.js', '**/*.ts', '**/*.tsx', '**/*.vue', '**/*.jsx', '**/*.svelte', '**/*.astro'],
+    files: SOURCE_FILES,
     ...basePreset
   });
 
   // 6. Import/export rules
   config.push({
-    files: ['**/*.js', '**/*.ts', '**/*.tsx', '**/*.vue', '**/*.jsx', '**/*.svelte', '**/*.astro'],
+    files: SOURCE_FILES,
     ...importsPreset
   });
 
