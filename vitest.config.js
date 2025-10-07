@@ -13,10 +13,10 @@ export default defineConfig({
         'tests/**'
       ],
       thresholds: {
-        lines: 80,
-        functions: 80,
-        branches: 75,
-        statements: 80
+        lines: 100,
+        functions: 100,
+        branches: 100,
+        statements: 100
       }
     },
     mockReset: true,
