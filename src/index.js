@@ -77,7 +77,7 @@ function getEnvironmentConfig(environment) {
 function addTypeScriptConfig(config) {
   config.push(...tseslint.configs.recommended);
   config.push({
-    files: ['**/*.js', '**/*.ts', '**/*.tsx', '**/*.vue', '**/*.jsx', '**.svelte', '**.astro'],
+    files: ['**/*.js', '**/*.ts', '**/*.tsx', '**/*.vue', '**/*.jsx', '**/*.svelte', '**/*.astro'],
     ...typescriptPreset
   });
 
@@ -131,7 +131,7 @@ function addOverrides(config, options) {
   // User-provided rule overrides
   if (options.rules && Object.keys(options.rules).length > 0) {
     config.push({
-      files: ['**/*.js', '**/*.ts', '**/*.tsx', '**/*.vue', '**/*.jsx', '**.svelte', '**.astro'],
+      files: ['**/*.js', '**/*.ts', '**/*.tsx', '**/*.vue', '**/*.jsx', '**/*.svelte', '**/*.astro'],
       rules: options.rules
     });
   }
@@ -212,19 +212,19 @@ export default async function createConfig(options = {}) {
   // 4. Environment configuration
   const envConfig = getEnvironmentConfig(environment);
   config.push({
-    files: ['**/*.js', '**/*.ts', '**/*.tsx', '**/*.vue', '**/*.jsx', '**.svelte', '**.astro'],
+    files: ['**/*.js', '**/*.ts', '**/*.tsx', '**/*.vue', '**/*.jsx', '**/*.svelte', '**/*.astro'],
     ...envConfig
   });
 
   // 5. Base JavaScript rules
   config.push({
-    files: ['**/*.js', '**/*.ts', '**/*.tsx', '**/*.vue', '**/*.jsx', '**.svelte', '**.astro'],
+    files: ['**/*.js', '**/*.ts', '**/*.tsx', '**/*.vue', '**/*.jsx', '**/*.svelte', '**/*.astro'],
     ...basePreset
   });
 
   // 6. Import/export rules
   config.push({
-    files: ['**/*.js', '**/*.ts', '**/*.tsx', '**/*.vue', '**/*.jsx', '**.svelte', '**.astro'],
+    files: ['**/*.js', '**/*.ts', '**/*.tsx', '**/*.vue', '**/*.jsx', '**/*.svelte', '**/*.astro'],
     ...importsPreset
   });
 
