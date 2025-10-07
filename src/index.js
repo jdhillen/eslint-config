@@ -21,6 +21,11 @@ const SOURCE_FILES = ['**/*.js', '**/*.ts', '**/*.tsx', '**/*.vue', '**/*.jsx', 
 
 /**
  * Add framework-specific configuration to config array
+ * Supports lazy loading for Svelte, Solid, and Astro to avoid requiring optional peer dependencies
+ *
+ * @param {Array} config - ESLint flat config array to append framework presets to
+ * @param {string} framework - Framework name ('react' | 'vue' | 'svelte' | 'solid' | 'astro' | 'angular' | 'vanilla' | 'node')
+ * @returns {Promise<void>}
  */
 async function addFrameworkConfig(config, framework) {
   switch (framework) {
@@ -62,7 +67,11 @@ async function addFrameworkConfig(config, framework) {
 }
 
 /**
- * Get environment configuration
+ * Get environment configuration based on detected or specified environment
+ * Returns globals and languageOptions for browser, node, or universal environments
+ *
+ * @param {string} environment - Environment type ('browser' | 'node' | 'universal')
+ * @returns {Object} Environment configuration object with languageOptions
  */
 function getEnvironmentConfig(environment) {
   switch (environment) {
@@ -77,7 +86,11 @@ function getEnvironmentConfig(environment) {
 }
 
 /**
- * Add TypeScript configuration
+ * Add TypeScript configuration to config array
+ * Includes recommended TypeScript rules with relaxed settings for .d.ts and .js files
+ *
+ * @param {Array} config - ESLint flat config array to append TypeScript presets to
+ * @returns {void}
  */
 function addTypeScriptConfig(config) {
   config.push(...tseslint.configs.recommended);
@@ -102,7 +115,13 @@ function addTypeScriptConfig(config) {
 }
 
 /**
- * Add test and script overrides
+ * Add test and script overrides to config array
+ * Relaxes rules for test files and CLI scripts, and applies user-provided rule overrides
+ *
+ * @param {Array} config - ESLint flat config array to append overrides to
+ * @param {Object} options - Configuration options containing user rule overrides
+ * @param {Object} [options.rules] - User-provided rule overrides
+ * @returns {void}
  */
 function addOverrides(config, options) {
   // Test files override
