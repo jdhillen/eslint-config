@@ -35,6 +35,9 @@ yarn.lock
 .eslintcache
 .stylelintcache
 
+# Test artifacts
+tests/.temp-*/
+
 # Optional
 *.tgz
 .npmrc
