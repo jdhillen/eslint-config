@@ -99,6 +99,29 @@ describe('Framework Detection', () => {
     expect(detectFramework(TEST_DIR)).toBe('node');
   });
 
+  it('should detect Node.js backend from Fastify', () => {
+    setup({
+      type: 'module',
+      dependencies: { fastify: '^4.0.0' }
+    });
+    expect(detectFramework(TEST_DIR)).toBe('node');
+  });
+
+  it('should detect Node.js backend from Koa', () => {
+    setup({
+      type: 'module',
+      dependencies: { koa: '^2.0.0' }
+    });
+    expect(detectFramework(TEST_DIR)).toBe('node');
+  });
+
+  it('should detect Node.js backend from server.js file only', () => {
+    setup({ type: 'module', dependencies: {} });
+    const serverFile = join(TEST_DIR, 'server.js');
+    writeFileSync(serverFile, 'console.log("server");');
+    expect(detectFramework(TEST_DIR)).toBe('node');
+  });
+
   it('should default to vanilla with no framework detected', () => {
     setup({ dependencies: {} });
     expect(detectFramework(TEST_DIR)).toBe('vanilla');
