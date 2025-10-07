@@ -1,1 +1,8 @@
+# Auto-fix linting issues before committing
+npm run lint:fix
+
+# Stage the auto-fixed changes
+git add -u
+
+# Final check for any unfixable issues
 npm run lint
