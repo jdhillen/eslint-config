@@ -1,5 +1,11 @@
 # @jdhillen/eslint-config
 
+[![npm version](https://img.shields.io/npm/v/@jdhillen/eslint-config.svg)](https://www.npmjs.com/package/@jdhillen/eslint-config)
+[![npm downloads](https://img.shields.io/npm/dm/@jdhillen/eslint-config.svg)](https://www.npmjs.com/package/@jdhillen/eslint-config)
+[![Build Status](https://github.com/jdhillen/eslint-config/workflows/Publish%20to%20NPM/badge.svg)](https://github.com/jdhillen/eslint-config/actions)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node Version](https://img.shields.io/badge/node-%3E%3D22.12.0-brightgreen.svg)](https://nodejs.org/)
+
 **Universal ESLint configuration for modern JavaScript and TypeScript projects.**
 
 Works with React, Vue, Svelte, Solid, Astro, Angular, Vanilla JS/TS, and Node.js. Auto-detects your framework and TypeScript - zero configuration required.
