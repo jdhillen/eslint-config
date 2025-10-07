@@ -38,6 +38,10 @@ yarn.lock
 # Test artifacts
 tests/.temp-*/
 
+# Claude AI context (keep local only)
+.claude/
+CLAUDE.md
+
 # Optional
 *.tgz
 .npmrc
