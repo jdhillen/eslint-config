@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { existsSync , readFileSync } from 'fs';
+import { existsSync } from 'fs';
 import { readFile, writeFile } from 'fs/promises';
 import { join , dirname } from 'path';
 import { fileURLToPath } from 'url';
@@ -35,9 +35,9 @@ More info: https://github.com/jdhillen/eslint-config
 `);
 }
 
-function showVersion() {
+async function showVersion() {
   const packagePath = join(__dirname, '../package.json');
-  const pkg = JSON.parse(readFileSync(packagePath, 'utf8'));
+  const pkg = JSON.parse(await readFile(packagePath, 'utf8'));
   console.log(`v${pkg.version}`);
 }
 
@@ -228,7 +228,7 @@ async function main() {
   }
 
   if (args.version) {
-    showVersion();
+    await showVersion();
     process.exit(0);
   }
 
