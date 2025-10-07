@@ -8,7 +8,7 @@
 import { writeFileSync, mkdirSync, rmSync } from 'fs';
 import { join } from 'path';
 
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
 
 import createConfig from '../../src/index.js';
 
@@ -156,6 +156,23 @@ describe('Explicit Options', () => {
     expect(config).toBeInstanceOf(Array);
     expect(config.length).toBeGreaterThan(0);
   });
+
+  it('should handle Astro framework with lazy loading', async () => {
+    setup({ dependencies: { astro: '^5.0.0' } });
+    const config = await createConfig({
+      cwd: TEST_DIR,
+      framework: 'astro'
+    });
+
+    // Should include Astro preset configuration
+    expect(config).toBeInstanceOf(Array);
+    expect(config.length).toBeGreaterThan(0);
+    // Should have .astro file patterns
+    const hasAstroFiles = config.some(
+      (c) => c.files?.some((f) => f.includes('*.astro'))
+    );
+    expect(hasAstroFiles).toBe(true);
+  });
 });
 
 describe('Rule Overrides', () => {
@@ -227,5 +244,46 @@ describe('Edge Cases', () => {
 
     expect(config).toBeInstanceOf(Array);
     expect(config.length).toBeGreaterThan(0);
+  });
+
+  it('should handle unknown framework gracefully', async () => {
+    setup({ dependencies: {} });
+
+    // Spy on console.warn
+    const consoleWarnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    const config = await createConfig({
+      framework: 'nonexistent-framework',
+      cwd: TEST_DIR
+    });
+
+    // Should warn about unknown framework
+    expect(consoleWarnSpy).toHaveBeenCalledWith(
+      expect.stringContaining('Unknown framework "nonexistent-framework"')
+    );
+
+    // Should still return valid config with vanilla fallback
+    expect(config).toBeInstanceOf(Array);
+    expect(config.length).toBeGreaterThan(0);
+
+    consoleWarnSpy.mockRestore();
+  });
+
+  it('should apply universal environment when explicitly set', async () => {
+    setup({ dependencies: { react: '^18.0.0' } });
+
+    const config = await createConfig({
+      environment: 'universal',
+      cwd: TEST_DIR
+    });
+
+    // Should include config with both browser and node globals
+    const envConfig = config.find(c => c.languageOptions?.globals);
+    expect(envConfig).toBeDefined();
+
+    // Universal environment should have both browser and node globals
+    const {globals} = envConfig.languageOptions;
+    expect(globals).toHaveProperty('window'); // Browser global
+    expect(globals).toHaveProperty('process'); // Node global
   });
 });

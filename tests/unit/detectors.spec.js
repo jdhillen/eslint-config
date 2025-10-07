@@ -124,6 +124,27 @@ describe('Environment Detection', () => {
     setup({ dependencies: { astro: '^5.0.0' } });
     expect(detectEnvironment('astro', TEST_DIR)).toBe('universal');
   });
+
+  it('should detect universal environment with server directory', () => {
+    setup({ dependencies: {} });
+    const serverDir = join(TEST_DIR, 'server');
+    mkdirSync(serverDir, { recursive: true });
+    expect(detectEnvironment('vanilla', TEST_DIR)).toBe('universal');
+  });
+
+  it('should detect universal environment with api directory', () => {
+    setup({ dependencies: {} });
+    const apiDir = join(TEST_DIR, 'api');
+    mkdirSync(apiDir, { recursive: true });
+    expect(detectEnvironment('vanilla', TEST_DIR)).toBe('universal');
+  });
+
+  it('should detect universal environment with backend directory', () => {
+    setup({ dependencies: {} });
+    const backendDir = join(TEST_DIR, 'backend');
+    mkdirSync(backendDir, { recursive: true });
+    expect(detectEnvironment('vanilla', TEST_DIR)).toBe('universal');
+  });
 });
 
 describe('TypeScript Detection', () => {
