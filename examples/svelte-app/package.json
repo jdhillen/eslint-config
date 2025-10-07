@@ -1,0 +1,16 @@
+{
+  "name": "svelte-app-example",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix ."
+  },
+  "dependencies": {
+    "svelte": "^5.39.9"
+  },
+  "devDependencies": {
+    "@jdhillen/eslint-config": "file:../.."
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "name": "vue-app-example",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix ."
+  },
+  "dependencies": {
+    "vue": "^3.5.13"
+  },
+  "devDependencies": {
+    "@jdhillen/eslint-config": "file:../.."
+  }
+}

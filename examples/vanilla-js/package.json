@@ -1,0 +1,13 @@
+{
+  "name": "vanilla-js-example",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix ."
+  },
+  "devDependencies": {
+    "@jdhillen/eslint-config": "file:../.."
+  }
+}

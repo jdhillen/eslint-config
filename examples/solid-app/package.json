@@ -1,0 +1,17 @@
+{
+  "name": "solid-app-example",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix ."
+  },
+  "dependencies": {
+    "solid-js": "^1.10.0"
+  },
+  "devDependencies": {
+    "@jdhillen/eslint-config": "file:../..",
+    "typescript": "^5.9.3"
+  }
+}

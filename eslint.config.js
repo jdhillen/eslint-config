@@ -4,5 +4,8 @@ import createConfig from './src/index.js';
 export default createConfig({
   environment: 'node',
   typescript: false,
-  ignorePaths: ['src/index.js.backup']
+  ignorePaths: [
+    'src/index.js.backup',
+    'examples/**'  // Don't lint example projects (they have their own configs)
+  ]
 });

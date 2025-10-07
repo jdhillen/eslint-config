@@ -1,0 +1,33 @@
+---
+// Component Script (runs on server at build time)
+interface Props {
+  title?: string;
+}
+
+const { title = 'Welcome to Astro' } = Astro.props;
+
+const items = [
+  { id: 1, text: 'Island Architecture' },
+  { id: 2, text: 'Zero JS by Default' },
+  { id: 3, text: 'Universal Environment' },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <main>
+      <h1>{title}</h1>
+      <ul>
+        {items.map((item) => (
+          <li key={item.id}>{item.text}</li>
+        ))}
+      </ul>
+    </main>
+  </body>
+</html>
