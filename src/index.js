@@ -186,7 +186,8 @@ export default async function createConfig(options = {}) {
   const environment = options.environment === 'auto' || !options.environment ? detected.environment : options.environment;
   const typescript = options.typescript === 'auto' || options.typescript === undefined ? detected.typescript : options.typescript;
 
-  console.warn(
+  // eslint-disable-next-line no-console -- Informational message for config detection (should go to stdout)
+  console.log(
     `📦 ESLint Config: ${framework} | ${environment} | TypeScript: ${typescript ? 'Yes' : 'No'}`
   );
 
