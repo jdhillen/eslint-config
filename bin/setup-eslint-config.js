@@ -1,8 +1,54 @@
 #!/usr/bin/env node
 
-import { existsSync } from 'fs';
+import { existsSync , readFileSync } from 'fs';
 import { readFile, writeFile } from 'fs/promises';
-import { join } from 'path';
+import { join , dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+function showHelp() {
+  console.log(`
+📦 @jdhillen/eslint-config Setup Tool
+
+Usage: npx setup-eslint-config [options]
+
+Options:
+  --help, -h       Show this help message
+  --version, -v    Show version number
+  --dry-run        Preview changes without writing files
+
+Description:
+  Automatically sets up ESLint configuration for your project:
+  - Creates eslint.config.js with auto-detection
+  - Adds lint and lint:fix scripts to package.json
+  - Detects your framework (React, Vue, Svelte, Solid, Astro, Angular, Node.js, Vanilla)
+  - Detects TypeScript from tsconfig.json
+
+Examples:
+  npx setup-eslint-config              # Run setup
+  npx setup-eslint-config --dry-run    # Preview without changes
+  npx setup-eslint-config --help       # Show this help
+
+More info: https://github.com/jdhillen/eslint-config
+`);
+}
+
+function showVersion() {
+  const packagePath = join(__dirname, '../package.json');
+  const pkg = JSON.parse(readFileSync(packagePath, 'utf8'));
+  console.log(`v${pkg.version}`);
+}
+
+function parseArgs() {
+  const args = process.argv.slice(2);
+  return {
+    help: args.includes('--help') || args.includes('-h'),
+    version: args.includes('--version') || args.includes('-v'),
+    dryRun: args.includes('--dry-run')
+  };
+}
 
 function detectFrameworkFromDeps(allDeps) {
   const frameworkChecks = [
@@ -47,11 +93,16 @@ async function detectProjectSetup() {
   return { framework, typescript };
 }
 
-async function createEslintConfig() {
+async function createEslintConfig(dryRun = false) {
   const eslintConfigPath = join(process.cwd(), 'eslint.config.js');
 
   if (existsSync(eslintConfigPath)) {
     console.log('ℹ️ eslint.config.js already exists');
+    return;
+  }
+
+  if (dryRun) {
+    console.log('📝 [DRY RUN] Would create eslint.config.js');
     return;
   }
 
@@ -109,7 +160,7 @@ export default await createConfig();
   await writeFile(eslintConfigPath, eslintConfig, 'utf8');
 }
 
-async function updatePackageJson() {
+async function updatePackageJson(dryRun = false) {
   try {
     const detected = await detectProjectSetup();
 
@@ -129,7 +180,7 @@ async function updatePackageJson() {
     packageJson.scripts = packageJson.scripts || {};
 
     if (!packageJson.scripts.lint) {
-      console.log('📝 Adding lint script...');
+      console.log(dryRun ? '📝 [DRY RUN] Would add lint script' : '📝 Adding lint script...');
       packageJson.scripts.lint = 'eslint .';
       modified = true;
     } else {
@@ -137,29 +188,58 @@ async function updatePackageJson() {
     }
 
     if (!packageJson.scripts['lint:fix']) {
-      console.log('📝 Adding lint:fix script...');
+      console.log(dryRun ? '📝 [DRY RUN] Would add lint:fix script' : '📝 Adding lint:fix script...');
       packageJson.scripts['lint:fix'] = 'eslint --fix .';
       modified = true;
     } else {
       console.log('ℹ️ lint:fix script already exists');
     }
 
-    if (modified) {
+    if (modified && !dryRun) {
       await writeFile(packagePath, `${JSON.stringify(packageJson, null, 2)  }\n`, 'utf8');
       console.log('✅ Successfully updated package.json');
+    } else if (modified && dryRun) {
+      console.log('✅ [DRY RUN] Would update package.json');
     } else {
       console.log('✨ No changes needed in package.json');
     }
 
-    await createEslintConfig();
+    await createEslintConfig(dryRun);
 
-    console.log('✅ ESLint setup completed successfully');
-    console.log('🚀 Run "npm run lint" to start linting your code');
+    if (dryRun) {
+      console.log('✅ [DRY RUN] Preview complete - no files were modified');
+      console.log('💡 Run without --dry-run to apply changes');
+    } else {
+      console.log('✅ ESLint setup completed successfully');
+      console.log('🚀 Run "npm run lint" to start linting your code');
+    }
   } catch (error) {
     console.error('❌ Error during ESLint setup:', error.message);
     process.exit(1);
   }
 }
 
-console.log('🔧 Setting up ESLint with @jdhillen/eslint-config...');
-updatePackageJson();
+async function main() {
+  const args = parseArgs();
+
+  if (args.help) {
+    showHelp();
+    process.exit(0);
+  }
+
+  if (args.version) {
+    showVersion();
+    process.exit(0);
+  }
+
+  const mode = args.dryRun ? ' [DRY RUN MODE]' : '';
+  console.log(`🔧 Setting up ESLint with @jdhillen/eslint-config...${mode}`);
+
+  if (args.dryRun) {
+    console.log('ℹ️ Running in dry-run mode - no files will be modified\n');
+  }
+
+  await updatePackageJson(args.dryRun);
+}
+
+main();
